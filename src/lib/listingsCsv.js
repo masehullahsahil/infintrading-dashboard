@@ -3,8 +3,10 @@
 // EvaluatorPage.jsx only renders the { rows, stats, warnings, error } result.
 
 import Papa from "papaparse";
+import { readFeedFile, MAX_FEED_BYTES } from "./feedFile";
 
-export const MAX_CSV_BYTES = 5 * 1024 * 1024; // 5 MB
+// Kept for backwards compatibility; the limit now lives in feedFile.js.
+export const MAX_CSV_BYTES = MAX_FEED_BYTES;
 
 export const EXPECTED_COLUMNS = [
   "brand",
@@ -95,24 +97,8 @@ export function parseListingsText(csvText, fileName = "listings.csv") {
  * Read a File object and parse it as listings CSV.
  * @returns {Promise<{ rows: object[], stats: object | null, warnings: string[], error: string | null }>}
  */
-export function parseListingsFile(file) {
-  return new Promise((resolve) => {
-    if (!file) {
-      resolve(emptyResult("No file selected."));
-      return;
-    }
-    if (file.size > MAX_CSV_BYTES) {
-      resolve(
-        emptyResult(
-          `“${file.name}” is ${(file.size / 1048576).toFixed(1)} MB — the limit is 5 MB.`
-        )
-      );
-      return;
-    }
-    const reader = new FileReader();
-    reader.onerror = () => resolve(emptyResult(`Could not read “${file.name}”.`));
-    reader.onload = () =>
-      resolve(parseListingsText(String(reader.result || ""), file.name));
-    reader.readAsText(file);
-  });
+export async function parseListingsFile(file) {
+  const { text, error } = await readFeedFile(file);
+  if (error) return emptyResult(error);
+  return parseListingsText(text, file.name);
 }

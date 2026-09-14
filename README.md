@@ -21,23 +21,49 @@ npm run lint     # eslint
 - **Agent pages** — per-agent metric cards plus a newest-first activity log,
   with pause/resume per agent.
 - **Live ticker** — a scrolling strip of the newest event from each agent.
-- **Evaluator CSV upload** — drop in a real `listings.csv` (e.g. from
-  `scout_parser.py`) to switch the Evaluator from simulated to real data and
-  browse the listings table. A sample file ships at
-  `public/sample-listings.csv` so you can try it without real data.
+- **Real-data feeds** — every agent page has an upload control: drop in a
+  CSV or JSON feed (validated against that agent's contract) to switch it
+  from simulated to real data and browse the feed table. Sample files ship at
+  `public/sample-*.csv` so you can try every agent's real path without real
+  data.
 
 ## Demo vs. live data
 
-Three agents (Finder, Buyer, Bookkeeper) currently run on a **simulated feed** —
-the dashboard says so wherever it matters ("Simulated feed" badges, and a
-banner on the Overview page). The Evaluator switches to a **"Live data"** badge
-once a real CSV is loaded.
+Every agent starts on a **simulated feed** — the dashboard says so wherever it
+matters ("Simulated feed" badges, and a banner on the Overview page naming
+which agents are still simulated). Uploading a valid feed file switches that
+agent to a **"Live data"** badge; clearing the feed switches it back. An agent
+shows exactly one feed at a time — simulated rows are never mixed into a live
+dataset, and a rejected upload changes nothing.
 
-To wire a real backend later, replace the generators in
+To wire an automatic backend later, replace the generators in
 `src/lib/mockGenerators.js` with fetch/WebSocket calls behind the data-source
 abstraction in `src/lib/dataSource.js` — the UI already branches on it.
 
-## listings.csv schema
+## Feed contracts
+
+Each agent accepts a CSV (header row + data rows) or a JSON array of objects
+using the same field names. Uploads are validated client-side before anything
+is applied: 5 MB max, required columns present, numeric fields parse as
+numbers (`$1,240` style tolerated), enum fields match the allowed values, and
+every bad row is reported with its row number. A file with any invalid row is
+rejected outright — fix it and re-upload. Uploaded feeds and agent
+pause/resume state persist in `localStorage` across reloads.
+
+### Finder — `suppliers.csv`
+
+| Column           | Required | Notes                                                              |
+| ---------------- | -------- | ------------------------------------------------------------------ |
+| `supplier_name`  | **yes**  | e.g. `Summit Liquidators`                                          |
+| `supplier_type`  | no       | e.g. `Liquidation auction house`, `B2B wholesale marketplace`       |
+| `source_channel` | no       | Where it was found, e.g. `Wholesale portal`, `Broker email`         |
+| `contact`        | no       | Email or URL                                                       |
+| `found_date`     | no       | `YYYY-MM-DD`                                                       |
+| `status`         | no       | `active` (default) or `under_review`                               |
+
+Metrics: Suppliers found (rows) · Roster size (distinct names) · Under review.
+
+### Evaluator — `listings.csv`
 
 | Column            | Required | Notes                                            |
 | ----------------- | -------- | ------------------------------------------------ |
@@ -50,9 +76,57 @@ abstraction in `src/lib/dataSource.js` — the UI already branches on it.
 | `expected_profit` | no       | `estimated_resale - asking_price`, in USD        |
 | `has_comp`        | no       | `True`/`False` — matched to a comparable listing |
 
-Uploads are validated client-side (max 5 MB, required columns, parse errors
-surfaced in the UI). Uploaded listings and agent pause/resume state persist in
-`localStorage` across reloads.
+Metrics: Listings seen (rows) · Matched to comp · Avg. margin.
+
+### Buyer — `offers.csv`
+
+| Column         | Required | Notes                                                              |
+| -------------- | -------- | ------------------------------------------------------------------ |
+| `model`        | **yes**  | e.g. `ThinkPad X1 Carbon Gen9`                                     |
+| `asking_price` | **yes**  | Seller's asking price in USD                                       |
+| `offer_price`  | **yes**  | Our offer in USD                                                   |
+| `status`       | **yes**  | `offer_sent`, `countered`, `accepted`, `declined`, `no_response`    |
+| `seller`       | no       | Who the offer went to                                              |
+| `date`         | no       | `YYYY-MM-DD`                                                       |
+
+Metrics: Offers sent (rows) · Active threads (`offer_sent`/`countered`/`no_response`) · Accept rate (`accepted` ÷ decided).
+
+### Bookkeeper — `ledger.csv`
+
+| Column           | Required | Notes                                                              |
+| ---------------- | -------- | ------------------------------------------------------------------ |
+| `model`          | **yes**  | e.g. `ThinkPad X1 Carbon Gen9`                                     |
+| `purchase_price` | **yes**  | What we paid, in USD                                               |
+| `purchase_date`  | no       | `YYYY-MM-DD`                                                       |
+| `resale_price`   | no       | Sale price in USD — blank means still held                         |
+| `fees`           | no       | Marketplace/shipping fees in USD                                   |
+| `seller`         | no       | Who we bought from                                                 |
+
+Metrics: Units purchased (rows) · Budget remaining (USD 10,000 starting budget
+minus spend) · Blended ROI over sold items: `(resale − cost − fees) ÷ cost`.
+
+## Still needed for automatic collection
+
+The dashboard is ready to *display* real data, but nothing collects it yet —
+feeds are manual uploads. Making the agents truly live means building, per
+agent:
+
+- **Finder** — supplier discovery: scrapers or API integrations for
+  liquidation auction houses, B2B wholesale marketplaces, and broker lists,
+  plus dedupe against the existing roster.
+- **Evaluator** — listing ingestion: scheduled runs of the listing scouts
+  (e.g. the existing `scout_parser.py` output wired to an upload/endpoint),
+  comp matching, and margin estimation.
+- **Buyer** — offer tracking: an outbox/inbox for offers (marketplace
+  messaging APIs or email parsing) that records status transitions instead of
+  hand-entered rows.
+- **Bookkeeper** — ledger sync: imports from the actual payment/accounting
+  source of truth (bank/processor exports or accounting software API) rather
+  than a hand-built CSV.
+
+Plus the cross-cutting pieces: a scheduler, server-side validation of
+incoming data, and authentication for any write-capable integration. None of
+this is built — the feed contracts above are the documented handoff point.
 
 ## Project structure
 
@@ -63,17 +137,25 @@ src/
   theme.js                 design tokens (mirrored as CSS vars in index.css)
   index.css                global reset, tokens, keyframes, utility classes
   components/              Ticker, Sidebar, StatCard, StatusBadge, DemoBadge,
-                           Overview, AgentPage, EvaluatorPage, ErrorBoundary
+                           Overview, AgentPage, FeedControls, FeedTable,
+                           ErrorBoundary
   hooks/
-    useAgentSimulation.js  agent state, event tick loop, ticker, persistence
+    useAgentSimulation.js  agent state, event tick loop, ticker, per-agent
+                           feeds, persistence
     useIsNarrow.js         responsive breakpoint hook
   lib/
     agents.js              agent definitions, metric seeds
     mockGenerators.js      simulated event generators (demo feed)
     dataSource.js          demo vs. live data-mode resolution
-    listingsCsv.js         CSV parsing, validation, stats
+    agentFeeds.js          per-agent feed contracts: schema, validation,
+                           parsing (CSV/JSON), metric summarizers
+    feedFile.js            shared upload file-reading (size limit)
+    listingsCsv.js         Evaluator CSV parsing, validation, stats
 public/
   sample-listings.csv      try the Evaluator's real-data path
+  sample-suppliers.csv     try the Finder's real-data path
+  sample-offers.csv        try the Buyer's real-data path
+  sample-ledger.csv        try the Bookkeeper's real-data path
   favicon.svg
 ```
 

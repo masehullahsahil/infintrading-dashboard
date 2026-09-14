@@ -1,16 +1,24 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AGENT_DEFS, SEED_SOURCE, seedAgent } from "../lib/agents";
+import { AGENT_DEFS, SEED_SOURCE, seedAgent, seedMetrics } from "../lib/agents";
 import { rand } from "../lib/mockGenerators";
-import { summarizeListings } from "../lib/listingsCsv";
+import { FEED_CONTRACTS } from "../lib/agentFeeds";
 
-const STORAGE_KEY = "mad:v1";
+const STORAGE_KEY = "mad:v2";
+const LEGACY_STORAGE_KEY = "mad:v1";
 const MAX_STORED_ROWS = 200;
 const TICK_MS = 2600;
 const MAX_LOGS = 40;
 
-function loadPersisted() {
+const EMPTY_FEEDS = {
+  finder: null,
+  evaluator: null,
+  buyer: null,
+  bookkeeper: null,
+};
+
+function loadStored(key) {
   try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
+    const raw = window.localStorage.getItem(key);
     if (!raw) return null;
     const data = JSON.parse(raw);
     return data && typeof data === "object" ? data : null;
@@ -19,55 +27,82 @@ function loadPersisted() {
   }
 }
 
-function persistedRows() {
-  const rows = loadPersisted()?.realListings;
+function sanitizedFeed(rows) {
   return Array.isArray(rows) && rows.length > 0 ? rows : null;
 }
 
-function initialAgents() {
-  const persisted = loadPersisted();
+/**
+ * Real-data feeds rehydrated from storage. Migrates the old v1 payload
+ * (evaluator-only `realListings`) into the new per-agent `feeds` shape.
+ */
+function loadFeeds() {
+  const v2 = loadStored(STORAGE_KEY);
+  if (v2 && v2.feeds && typeof v2.feeds === "object") {
+    const feeds = { ...EMPTY_FEEDS };
+    for (const id of Object.keys(feeds)) feeds[id] = sanitizedFeed(v2.feeds[id]);
+    return feeds;
+  }
+  const v1 = loadStored(LEGACY_STORAGE_KEY);
+  if (v1) {
+    return { ...EMPTY_FEEDS, evaluator: sanitizedFeed(v1.realListings) };
+  }
+  return { ...EMPTY_FEEDS };
+}
+
+function loadStatuses() {
+  return (
+    loadStored(STORAGE_KEY)?.statuses ?? loadStored(LEGACY_STORAGE_KEY)?.statuses ?? null
+  );
+}
+
+function initialState() {
+  const feeds = loadFeeds();
+  const statuses = loadStatuses();
   const agents = {};
   AGENT_DEFS.forEach((d) => {
     agents[d.id] = seedAgent(d);
-    if (persisted?.statuses?.[d.id] === "paused") {
+    if (statuses?.[d.id] === "paused") {
       agents[d.id].status = "paused";
     }
+    const rows = feeds[d.id];
+    if (rows) {
+      const contract = FEED_CONTRACTS[d.id];
+      agents[d.id].metrics = contract.summarize(rows);
+      agents[d.id].logs = [
+        {
+          id: Date.now(),
+          text: `Restored ${rows.length} real ${contract.recordNoun} from previous session`,
+          t: new Date(),
+        },
+      ];
+    }
   });
-  const rows = persistedRows();
-  if (rows) {
-    const stats = summarizeListings(rows);
-    agents.evaluator.metrics = [stats.count, stats.matched, stats.avgMargin];
-    agents.evaluator.logs = [
-      {
-        id: Date.now(),
-        text: `Restored ${stats.count} real listings from previous session`,
-        t: new Date(),
-      },
-    ];
-  }
-  return agents;
+  return { agents, feeds };
 }
 
 /**
  * Owns all simulation state: per-agent status/logs/metrics, the live ticker,
- * the uploaded real listings, and localStorage persistence of pause state +
- * listings across reloads.
+ * the uploaded real-data feeds, and localStorage persistence of pause state +
+ * feeds across reloads.
  */
 export function useAgentSimulation() {
-  const [agents, setAgents] = useState(initialAgents);
+  const [boot] = useState(initialState);
+  const [agents, setAgents] = useState(boot.agents);
+  const [feeds, setFeeds] = useState(boot.feeds);
   const [ticker, setTicker] = useState(["System online — 4 agents initialized"]);
-  const [realListings, setRealListings] = useState(persistedRows);
   const lastSeedRef = useRef({});
   const prevTopLogs = useRef({});
   const lastSavedRef = useRef("");
 
   // Demo feed: one random running agent emits an event every tick.
-  // The Evaluator stops emitting mock events once real listings are loaded.
+  // An agent stops emitting mock events once its real feed is loaded, so
+  // simulated rows never mix into a live dataset.
   const tick = useCallback(() => {
     setAgents((prev) => {
       const eligible = AGENT_DEFS.filter((d) => {
         if (prev[d.id].status !== "running") return false;
-        if (d.id === "evaluator" && realListings) return false;
+        const live = feeds[d.id] && feeds[d.id].length > 0;
+        if (live) return false;
         return true;
       });
       if (eligible.length === 0) return prev;
@@ -102,7 +137,7 @@ export function useAgentSimulation() {
       next[def.id] = agent;
       return next;
     });
-  }, [realListings]);
+  }, [feeds]);
 
   useEffect(() => {
     const interval = setInterval(tick, TICK_MS);
@@ -124,16 +159,15 @@ export function useAgentSimulation() {
     }
   }, [agents]);
 
-  // Persist pause state + real listings; rehydrated on next load.
+  // Persist pause state + real feeds; rehydrated on next load.
   useEffect(() => {
     const statuses = {};
+    const storedFeeds = {};
     AGENT_DEFS.forEach((d) => {
       statuses[d.id] = agents[d.id].status;
+      storedFeeds[d.id] = feeds[d.id] ? feeds[d.id].slice(0, MAX_STORED_ROWS) : null;
     });
-    const payload = JSON.stringify({
-      statuses,
-      realListings: realListings ? realListings.slice(0, MAX_STORED_ROWS) : null,
-    });
+    const payload = JSON.stringify({ statuses, feeds: storedFeeds });
     if (payload === lastSavedRef.current) return;
     lastSavedRef.current = payload;
     try {
@@ -153,50 +187,41 @@ export function useAgentSimulation() {
     }));
   }, []);
 
-  const applyListings = useCallback((rows, sourceLabel) => {
-    const stats = summarizeListings(rows);
-    setRealListings(rows);
+  const applyFeed = useCallback((agentId, rows, sourceLabel) => {
+    const contract = FEED_CONTRACTS[agentId];
+    const line = `Loaded ${rows.length} real ${contract.recordNoun} from ${sourceLabel}`;
+    setFeeds((prev) => ({ ...prev, [agentId]: rows }));
     setAgents((prev) => ({
       ...prev,
-      evaluator: {
-        ...prev.evaluator,
+      [agentId]: {
+        ...prev[agentId],
         logs: [
-          {
-            id: Date.now(),
-            text: `Loaded ${stats.count} real listings from ${sourceLabel}`,
-            t: new Date(),
-          },
-          ...prev.evaluator.logs,
-        ],
-        metrics: [stats.count, stats.matched, stats.avgMargin],
+          { id: Date.now(), text: line, t: new Date() },
+          ...prev[agentId].logs,
+        ].slice(0, MAX_LOGS),
+        metrics: contract.summarize(rows),
       },
     }));
-    setTicker((prev) =>
-      [...prev, `EVALUATOR · Loaded ${stats.count} real listings from ${sourceLabel}`].slice(-10)
-    );
+    setTicker((prev) => [...prev, `${contract.id.toUpperCase()} · ${line}`].slice(-10));
   }, []);
 
-  const clearListings = useCallback(() => {
-    setRealListings(null);
+  const clearFeed = useCallback((agentId) => {
+    const contract = FEED_CONTRACTS[agentId];
+    const line = `Real ${contract.recordNoun} cleared — back to simulated feed`;
+    setFeeds((prev) => ({ ...prev, [agentId]: null }));
     setAgents((prev) => ({
       ...prev,
-      evaluator: {
-        ...prev.evaluator,
+      [agentId]: {
+        ...prev[agentId],
         logs: [
-          {
-            id: Date.now(),
-            text: "Real listings cleared — back to simulated feed",
-            t: new Date(),
-          },
-          ...prev.evaluator.logs,
-        ],
-        metrics: [0, 0, "$0"],
+          { id: Date.now(), text: line, t: new Date() },
+          ...prev[agentId].logs,
+        ].slice(0, MAX_LOGS),
+        metrics: seedMetrics(agentId),
       },
     }));
-    setTicker((prev) =>
-      [...prev, "EVALUATOR · Real listings cleared — back to simulated feed"].slice(-10)
-    );
+    setTicker((prev) => [...prev, `${contract.id.toUpperCase()} · ${line}`].slice(-10));
   }, []);
 
-  return { agents, ticker, realListings, toggleAgent, applyListings, clearListings };
+  return { agents, ticker, feeds, toggleAgent, applyFeed, clearFeed };
 }

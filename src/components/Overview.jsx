@@ -1,13 +1,17 @@
 import { LayoutGrid, Radar, Wallet, TrendingUp } from "lucide-react";
 import { T, FONTS } from "../theme";
 import { AGENT_DEFS } from "../lib/agents";
-import { agentDataMode } from "../lib/dataSource";
+import { agentDataMode, DATA_MODE } from "../lib/dataSource";
 import { StatCard } from "./StatCard";
 import { StatusBadge } from "./StatusBadge";
 import { DemoBadge } from "./DemoBadge";
 
-export function Overview({ agents, realListings, onOpen }) {
-  const ctx = { realListings };
+export function Overview({ agents, feeds, onOpen }) {
+  const ctx = { feeds };
+  const demoAgents = AGENT_DEFS.filter(
+    (d) => agentDataMode(d.id, ctx) === DATA_MODE.DEMO
+  );
+  const demoNames = demoAgents.map((d) => d.name).join(", ");
   const totalScanned = agents.evaluator.metrics[0];
   const unitsPurchased = agents.bookkeeper.metrics[0];
   const budgetRemaining = agents.bookkeeper.metrics[1];
@@ -24,7 +28,7 @@ export function Overview({ agents, realListings, onOpen }) {
         </div>
       </div>
 
-      {!realListings && (
+      {demoAgents.length > 0 && (
         <div
           role="note"
           style={{
@@ -37,9 +41,9 @@ export function Overview({ agents, realListings, onOpen }) {
             color: T.dim,
           }}
         >
-          Evaluator is showing simulated data. Open the Evaluator page and upload
-          a real <code>listings.csv</code> to see real numbers — or try the
-          sample at <code>public/sample-listings.csv</code>.
+          {demoNames} {demoAgents.length === 1 ? "is" : "are"} showing simulated
+          data. Open an agent page and upload a real CSV or JSON feed to see
+          real numbers — or try the samples at <code>public/sample-*.csv</code>.
         </div>
       )}
 

@@ -1,0 +1,6 @@
+supplier_name,supplier_type,source_channel,contact,found_date,status
+Summit Liquidators,Liquidation auction house,Liquidation auction lot,bids@summitliq.example,2026-09-01,active
+Vector Wholesale Group,B2B wholesale marketplace,Wholesale portal,sales@vectorws.example,2026-09-02,under_review
+Crestline Trading Co.,Certified refurbisher,Broker email,buy@crestline.example,2026-09-03,active
+Northgate Surplus Assets,Liquidation broker,Supplier price list,info@northgatesurplus.example,2026-09-04,under_review
+Harborview Electronics Exchange,B2B wholesale marketplace,Wholesale portal,hello@harborview.example,2026-09-05,active
