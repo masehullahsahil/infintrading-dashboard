@@ -39,16 +39,24 @@ describe("seedMetrics / seedAgent", () => {
 });
 
 describe("agentDataMode", () => {
-  it("keeps finder/buyer/bookkeeper on the demo feed", () => {
-    ["finder", "buyer", "bookkeeper"].forEach((id) => {
-      expect(agentDataMode(id, { realListings: [{}, {}] })).toBe(DATA_MODE.DEMO);
-      expect(agentDataMode(id, { realListings: null })).toBe(DATA_MODE.DEMO);
+  it("keeps every agent on the demo feed without its own real rows", () => {
+    ["finder", "evaluator", "buyer", "bookkeeper"].forEach((id) => {
+      expect(agentDataMode(id, { feeds: {} })).toBe(DATA_MODE.DEMO);
+      expect(agentDataMode(id, { feeds: { [id]: null } })).toBe(DATA_MODE.DEMO);
+      expect(agentDataMode(id, { feeds: { [id]: [] } })).toBe(DATA_MODE.DEMO);
     });
   });
 
-  it("switches the evaluator to live once real listings exist", () => {
-    expect(agentDataMode("evaluator", { realListings: null })).toBe(DATA_MODE.DEMO);
-    expect(agentDataMode("evaluator", { realListings: [] })).toBe(DATA_MODE.DEMO);
-    expect(agentDataMode("evaluator", { realListings: [{}] })).toBe(DATA_MODE.LIVE);
+  it("switches any agent to live once its own feed has rows", () => {
+    ["finder", "evaluator", "buyer", "bookkeeper"].forEach((id) => {
+      expect(agentDataMode(id, { feeds: { [id]: [{}] } })).toBe(DATA_MODE.LIVE);
+    });
+  });
+
+  it("never mixes feeds across agents", () => {
+    expect(agentDataMode("buyer", { feeds: { evaluator: [{}] } })).toBe(DATA_MODE.DEMO);
+    expect(agentDataMode("finder", { feeds: { buyer: [{}], bookkeeper: [{}] } })).toBe(
+      DATA_MODE.DEMO
+    );
   });
 });

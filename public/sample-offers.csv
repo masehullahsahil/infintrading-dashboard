@@ -1,0 +1,7 @@
+model,asking_price,offer_price,status,seller,date
+ThinkPad X1 Carbon Gen9,420,380,accepted,Summit Liquidators,2026-09-06
+Dell XPS 13 9310,385,350,countered,Vector Wholesale Group,2026-09-07
+EliteBook 840 G8,310,280,offer_sent,Crestline Trading Co.,2026-09-08
+Surface Laptop 4,450,400,no_response,Northgate Surplus Assets,2026-09-09
+Latitude 7420,360,330,declined,Harborview Electronics Exchange,2026-09-10
+ThinkPad T14s Gen2,395,360,accepted,Summit Liquidators,2026-09-11

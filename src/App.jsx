@@ -10,11 +10,10 @@ import { Ticker } from "./components/Ticker";
 import { Sidebar } from "./components/Sidebar";
 import { Overview } from "./components/Overview";
 import { AgentPage } from "./components/AgentPage";
-import { EvaluatorPage } from "./components/EvaluatorPage";
 
 export default function AgentDashboard() {
   const [active, setActive] = useState("overview");
-  const { agents, ticker, realListings, toggleAgent, applyListings, clearListings } =
+  const { agents, ticker, feeds, toggleAgent, applyFeed, clearFeed } =
     useAgentSimulation();
   const narrow = useIsNarrow();
 
@@ -50,21 +49,15 @@ export default function AgentDashboard() {
           }}
         >
           {active === "overview" ? (
-            <Overview agents={agents} realListings={realListings} onOpen={setActive} />
-          ) : active === "evaluator" ? (
-            <EvaluatorPage
-              def={AGENT_DEFS.find((d) => d.id === "evaluator")}
-              agent={agents.evaluator}
-              onToggle={() => toggleAgent("evaluator")}
-              realListings={realListings}
-              onListingsLoaded={applyListings}
-              onClearListings={clearListings}
-            />
+            <Overview agents={agents} feeds={feeds} onOpen={setActive} />
           ) : (
             <AgentPage
               def={AGENT_DEFS.find((d) => d.id === active)}
               agent={agents[active]}
+              feeds={feeds}
               onToggle={() => toggleAgent(active)}
+              onFeedLoaded={applyFeed}
+              onClearFeed={clearFeed}
             />
           )}
         </main>
