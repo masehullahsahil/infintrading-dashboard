@@ -1,0 +1,13 @@
+brand,raw_model,cpu_family,gen,asking_price,estimated_resale,expected_profit,has_comp
+Lenovo,ThinkPad X1 Carbon Gen9,i7,9,420,560,140,True
+Dell,XPS 13 9310,i7,11,385,525,140,True
+HP,EliteBook 840 G8,i5,11,310,430,120,True
+Lenovo,ThinkPad T14s Gen2,Ryzen 7,,350,470,120,True
+Dell,Latitude 7420,i7,11,330,450,120,True
+Microsoft,Surface Laptop 4,Ryzen 5,,295,410,115,False
+HP,ProBook 640 G5,i5,8,180,260,80,True
+Lenovo,Legion 5,Ryzen 7,,520,660,140,True
+Dell,XPS 13 9300,i7,10,340,455,115,True
+HP,EliteBook 840 G8,i7,11,360,,,False
+Lenovo,ThinkPad X1 Carbon Gen9,i7,9,445,560,115,True
+Dell,Latitude 7420,i5,11,265,370,105,True

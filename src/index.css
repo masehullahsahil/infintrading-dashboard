@@ -1,111 +1,145 @@
+/* InfinTrading Agent Dashboard — base styles and design tokens.
+   Component-level styling lives inline next to the components; this file holds
+   the global reset, the token definitions, shared utility classes, and the
+   keyframe animations. */
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --mad-ink: #14171d;
+  --mad-panel: #1b1f27;
+  --mad-panel-2: #20242d;
+  --mad-line: #2c313c;
+  --mad-paper: #ede9df;
+  --mad-dim: #8a8f9b;
+  --mad-copper: #c1794a;
+  --mad-copper-dim: #8c5c39;
+  --mad-green: #6fbf73;
+  --mad-red: #d9584f;
+  --mad-amber: #d9a441;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --mad-font-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mad-font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
+  --mad-font-display: "Space Grotesk", "IBM Plex Sans", system-ui, sans-serif;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  color-scheme: dark;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
-body {
-  margin: 0;
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
+html,
+body {
   margin: 0;
+  padding: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+body {
+  background: var(--mad-ink);
+  color: var(--mad-paper);
+  font-family: var(--mad-font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+#root {
+  min-height: 100vh;
+}
+
+/* ---- scrollbars ---- */
+.mad-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.mad-scroll::-webkit-scrollbar-thumb {
+  background: var(--mad-line);
+  border-radius: 3px;
+}
+.mad-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ---- live ticker ---- */
+@keyframes mad-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+.mad-ticker-track {
+  animation: mad-marquee 22s linear infinite;
+}
+.mad-ticker:hover .mad-ticker-track {
+  animation-play-state: paused;
+}
+
+/* ---- log rows ---- */
+.mad-log-row {
+  animation: mad-fade 0.25s ease;
+}
+@keyframes mad-fade {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- buttons ---- */
+.mad-nav-btn {
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+.mad-nav-btn:hover {
+  background: var(--mad-panel-2);
+}
+.mad-btn {
+  transition: opacity 0.15s ease;
+}
+.mad-btn:hover {
+  opacity: 0.85;
+}
+.mad-nav-btn:focus-visible,
+.mad-btn:focus-visible {
+  outline: 2px solid var(--mad-copper);
+  outline-offset: 2px;
+}
+
+/* ---- data tables ---- */
+table.mad-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mad-font-mono);
+  font-size: 11.5px;
+}
+table.mad-table th {
+  text-align: left;
+  padding: 8px 10px;
+  color: var(--mad-dim);
+  border-bottom: 1px solid var(--mad-line);
+  font-weight: 500;
+  white-space: nowrap;
+}
+table.mad-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--mad-line);
+  white-space: nowrap;
+}
+
+/* ---- reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .mad-ticker-track {
+    animation: none;
+  }
+  .mad-log-row {
+    animation: none;
+  }
 }
