@@ -14,32 +14,28 @@ export const AGENT_DEFS = [
     icon: Search,
     gen: finderEvent,
     metricLabels: ["Suppliers found", "Roster size", "Under review"],
-  },
-  {
+  },  {
     id: "evaluator",
     name: "Evaluator",
     role: "Watches sources, prices what it finds",
     icon: Radar,
     gen: evaluatorMockEvent,
     metricLabels: ["Listings seen", "Matched to comp", "Avg. margin"],
-  },
-  {
-    id: "buyer",
-    name: "Buyer",
-    role: "Offers & closes deals",
-    icon: Handshake,
-    gen: buyerEvent,
-    metricLabels: ["Offers sent", "Active threads", "Accept rate"],
-  },
-  {
+  },  {
     id: "deals",
     name: "Deal Tracker",
     role: "Tracks the lots you're pursuing",
     icon: Target,
     gen: null,
     metricLabels: ["Tracked", "Closing soon", "Won"],
-  },
-];
+  },  {
+    id: "buyer",
+    name: "Buyer",
+    role: "Offers & closes deals",
+    icon: Handshake,
+    gen: buyerEvent,
+    metricLabels: ["Offers sent", "Active threads", "Accept rate"],
+  },];
 
 // Which agent's last event seeds another agent's generator (demo feed only).
 export const SEED_SOURCE = { buyer: "evaluator" };
