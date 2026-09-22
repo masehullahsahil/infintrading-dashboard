@@ -251,3 +251,19 @@ describe("parseFeedFile", () => {
     expect(error).toContain("No file selected");
   });
 });
+
+describe("evaluator table columns", () => {
+  const keys = FEED_CONTRACTS.evaluator.tableColumns.map((c) => c.key);
+
+  it("shows where the lot is, when it closes, and the verdict up front", () => {
+    for (const key of ["verdict", "source", "qty", "condition", "closes_at"]) {
+      expect(keys).toContain(key);
+    }
+    expect(keys.indexOf("verdict")).toBeLessThan(keys.indexOf("asking_price"));
+  });
+
+  it("links the lot title to its auction page", () => {
+    const lot = FEED_CONTRACTS.evaluator.tableColumns.find((c) => c.key === "raw_model");
+    expect(lot.link).toBe("lot_url");
+  });
+});
