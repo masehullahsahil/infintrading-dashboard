@@ -1,0 +1,362 @@
+[
+ {
+  "supplier_name": "Illinois CMS iBid Electronics",
+  "supplier_type": "Government / Institutional",
+  "source_channel": "Direct - government direct",
+  "contact": "https://ibid.illinois.gov/",
+  "found_date": "2026-09-21",
+  "status": "active"
+ },
+ {
+  "supplier_name": "University of Minnesota ReUse Program",
+  "supplier_type": "Government / Institutional",
+  "source_channel": "Direct - university direct",
+  "contact": "https://reuse.umn.edu/",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Cascade Asset Management",
+  "supplier_type": "Direct ITAD / Auction",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://cascade-assets.com/",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Maxxum",
+  "supplier_type": "Direct ITAD / Auction",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://maxxum.com/",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "GSA Auctions (U.S. General Services Administration)",
+  "supplier_type": "Government / Institutional",
+  "source_channel": "Direct - federal direct",
+  "contact": "https://gsaauctions.gov/",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "STS Recycling LLC DBA STS Electronic Recycling, Inc. DBA Discount Computer Depot",
+  "supplier_type": "Direct ITAD / Auction",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://www.stselectronicrecyclinginc.com",
+  "found_date": "2026-09-21",
+  "status": "active"
+ },
+ {
+  "supplier_name": "Teladvance LLC DBA: ITAD USA",
+  "supplier_type": "Direct ITAD / Auction",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://auctions.itadusa.com/",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "The Recon Group LLP dba ReturnPro dba GoTRG dba Direct Liquidation dba Go Wholesale dba VIPOutlet dba GoMint",
+  "supplier_type": "Direct ITAD / Auction",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://returnpro.com",
+  "found_date": "2026-09-21",
+  "status": "active"
+ },
+ {
+  "supplier_name": "VIG LLC / VIG ITAD",
+  "supplier_type": "Direct ITAD / Auction",
+  "source_channel": "Direct - ITAD direct",
+  "contact": "https://www.vigitad.com/",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Wisconsin Surplus Online Auction",
+  "supplier_type": "Auction Marketplace",
+  "source_channel": "Platform - underlying sellers often direct",
+  "contact": "https://wisconsinsurplus.com/",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "AllSurplus (Liquidity Services)",
+  "supplier_type": "Auction Marketplace",
+  "source_channel": "Platform - underlying sellers often direct",
+  "contact": "https://www.allsurplus.com/",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "GovDeals",
+  "supplier_type": "Auction Marketplace",
+  "source_channel": "Platform - underlying sellers often direct",
+  "contact": "https://www.govdeals.com/",
+  "found_date": "2026-09-21",
+  "status": "active"
+ },
+ {
+  "supplier_name": "Public Surplus",
+  "supplier_type": "Auction Marketplace",
+  "source_channel": "Platform - public sellers direct",
+  "contact": "https://www.publicsurplus.com/",
+  "found_date": "2026-09-21",
+  "status": "active"
+ },
+ {
+  "supplier_name": "Dynamic Lifecycle Innovations",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://thinkdynamic.com/",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "eCycle MN",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://ecyclemn.com/",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Integrated Recycling Technologies (IRT)",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://irtmn.com/",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "ITADlogic",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://itadlogic.com",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Lake State Recycling, Inc.",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://www.lakestaterecycling.com",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Redemption Recycling LLC",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://redemptionrecycling.com",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Sadoff E-Recycling & Data Destruction a division of Sadoff Iron & Metal Co",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://sadoffelectronicsrecycling.com",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "SectorSeven",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://sectorseven.com",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Summit 360",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://www.summit360.com/",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "TBF Computing",
+  "supplier_type": "Wholesaler / Broker",
+  "source_channel": "NO - wholesaler",
+  "contact": "https://www.computerexporting.com/",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Universal Recycling Technologies, LLC",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://urtsolutions.com",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "A&D Semiconductor LLC DBA Trinity IT Recycling",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://www.trinityitrecycling.com",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "AfterBits Electronic Recycling",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://afterbits.com",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Altr-B Recycling, Inc.",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://altr-binc.com",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Asset Management & Disposal d/b/a RetirePC",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://retirepc.com",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "B&K Technology Solutions LLC DBA Advanced Technology Recycling",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://atrecycle.com",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "B-Stock",
+  "supplier_type": "Auction Marketplace",
+  "source_channel": "Platform - retailer/manufacturer direct",
+  "contact": "https://bstock.com/",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Bass Computer Recycling",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://www.basscomputerrecycling.com/",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Colt Recycling, LLC",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "CompuCycle",
+  "supplier_type": "Direct ITAD / Auction",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://compucycle.com/",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Dotson IT Asset Management Corp.",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://dotsonit.com",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Echo Environmental, LLC",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://echoenvironmental.com",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Electronic Recyclers International, Inc. (ERI)",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://eridirect.com",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Gem Southwest LLC, DBA Gem Lifecycle Solutions",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://gemlifecycle.com",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "GreenTek Solutions, LLC",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://greenteksolutionsllc.com",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "HOBI International, Inc.",
+  "supplier_type": "Direct ITAD / Recycler",
+  "source_channel": "Direct potential - verify",
+  "contact": "https://hobi.com",
+  "found_date": "2026-09-21",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "GW Tech Parts",
+  "supplier_type": "Direct ITAD / Auction",
+  "source_channel": "Listed prices - wholesale portal",
+  "contact": "https://gwtechparts.com/collections/all",
+  "found_date": "2026-09-22",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Liquidation.com (Liquidity Services)",
+  "supplier_type": "Auction Marketplace",
+  "source_channel": "Platform - public auction",
+  "contact": "https://www.liquidation.com/",
+  "found_date": "2026-09-22",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Moecker Auctions",
+  "supplier_type": "Auction Marketplace",
+  "source_channel": "Platform - public auction",
+  "contact": "https://moeckerauctions.com/",
+  "found_date": "2026-09-22",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Dell Refurbished (Dell Financial Services)",
+  "supplier_type": "Direct ITAD / Auction",
+  "source_channel": "Direct - manufacturer wholesale",
+  "contact": "https://www.dellrefurbished.com/off-lease-laptops-wholesale",
+  "found_date": "2026-09-22",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Cal Auctions",
+  "supplier_type": "Auction Marketplace",
+  "source_channel": "Platform - public auction",
+  "contact": "https://calauctions.com/",
+  "found_date": "2026-09-22",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Merkandi",
+  "supplier_type": "B2B marketplace",
+  "source_channel": "Wholesale portal",
+  "contact": "https://merkandi.us/wholesale/laptop-pallets",
+  "found_date": "2026-09-22",
+  "status": "under_review"
+ }
+]

@@ -1,0 +1,74 @@
+[
+ {
+  "date_found": "2026-09-22",
+  "company": "GW Tech Parts",
+  "url": "https://gwtechparts.com/collections/all",
+  "type": "wholesaler",
+  "location": "Indianapolis IN / Atlanta GA, US",
+  "how_lots_sold": "listed prices + downloadable inventory xlsx",
+  "bulk_evidence": "115x Dell mixed laptop lot @ $21/unit; 165x HP 6th-7th gen lot; claims 10,000+ lots / 1M+ computers sold since 2008",
+  "why_promising": "Transparent listed prices on tested/graded bulk laptop lots; ships worldwide (possible direct-to-UAE); established US refurbisher",
+  "open_question": "export/freight logistics to UAE",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-22",
+  "company": "Liquidation.com (Liquidity Services)",
+  "url": "https://www.liquidation.com/auction/search?query=TQ3xL222Tyj49f2ckN2xKN1ceU2.kH2ckNz.eNwbeNDyeHwikf2V",
+  "type": "marketplace/auction house",
+  "location": "US",
+  "how_lots_sold": "public auction",
+  "bulk_evidence": "1000-unit laptop pallet auction (Dell/HP/Acer i3-i7) by JohbetElectronics; recurring 34-50 unit laptop auctions, current bid $2,190 on 34-unit refurb lot",
+  "why_promising": "Sister site of already-watched AllSurplus but separate marketplace; recurring bulk laptop pallets at auction prices; buyer demand data visible",
+  "open_question": "buyer premium + shipping from FL warehouses",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-22",
+  "company": "Moecker Auctions",
+  "url": "https://moeckerauctions.com/2026/09/22/ecom-authority-llc-24/",
+  "type": "auction house",
+  "location": "Fort Lauderdale FL, US",
+  "how_lots_sold": "public online auction",
+  "bulk_evidence": "Dedicated laptop & electronics liquidation auctions; machines factory-reset with Windows 10/11 Pro; recurring bulk lots",
+  "why_promising": "Regional FL auctioneer running recurring electronics/laptop liquidation events; factory-reset Win10/11 units reduce refurb cost",
+  "open_question": "no shipping offered (buyer pickup only); bulk pallet frequency",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-22",
+  "company": "Dell Refurbished (Dell Financial Services)",
+  "url": "https://www.dellrefurbished.com/off-lease-laptops-wholesale",
+  "type": "manufacturer off-lease wholesaler",
+  "location": "US (Dell Financial Services)",
+  "how_lots_sold": "listed prices / wholesale program (min 100 units; licensed US businesses only)",
+  "bulk_evidence": "Wholesale program min 100 assets; off-lease corporate laptops, tested/refurbished, 100-day warranty",
+  "why_promising": "Direct-from-Dell corporate lease returns with testing + warranty; listed wholesale pricing for bulk orders; premium product at volume",
+  "open_question": "requires licensed US business; no freight forwarders; price levels vs auction comps",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-22",
+  "company": "Cal Auctions",
+  "url": "https://calauctions.com/auctions/1YuxYUmU5lDuYk8tyXiE/a/Palomar-College-Surplus---Escondido-Campus---Escondido--CA-92027",
+  "type": "auction house (university surplus)",
+  "location": "California, US",
+  "how_lots_sold": "public online auction",
+  "bulk_evidence": "28x Dell Latitude E7470 laptop lot @ $49/unit; ~250 desktop lot @ $40/unit; regular school-district computer lots",
+  "why_promising": "Dedicated CA school-district surplus auctioneer; bulk laptop lots at very low per-unit prices; recurring inventory from multiple colleges",
+  "open_question": "CA pickup only; freight to TN/MN + UAE",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-22",
+  "company": "Merkandi",
+  "url": "https://merkandi.us/wholesale/laptop-pallets",
+  "type": "B2B marketplace",
+  "location": "non-US (stock mostly NL/DE, EU)",
+  "how_lots_sold": "listed prices (negotiable)",
+  "bulk_evidence": "125pc corporate laptop lot @ $17.20/pc; 700pc i3/i5/i7 lot @ $17.15/pc; 34pc HP lot @ $21.79/pc",
+  "why_promising": "Per-unit prices well below US auction comps; EU corporate lots could be transshipment or arbitrage source; free-to-browse price data",
+  "open_question": "actual ship-from country + freight/import cost to UAE",
+  "status": "proposed"
+ }
+]
