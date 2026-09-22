@@ -1,5 +1,4 @@
 import { LayoutGrid, Radar, Wallet, TrendingUp } from "lucide-react";
-import { T, FONTS } from "../theme";
 import { AGENT_DEFS } from "../lib/agents";
 import { agentDataMode, DATA_MODE } from "../lib/dataSource";
 import { StatCard } from "./StatCard";
@@ -19,48 +18,28 @@ export function Overview({ agents, feeds, onOpen }) {
 
   return (
     <div>
-      <div style={{ marginBottom: 22 }}>
-        <div style={{ fontFamily: FONTS.display, fontSize: 22, fontWeight: 600 }}>
-          Overview
-        </div>
-        <div style={{ fontSize: 13, color: T.dim, marginTop: 3 }}>
+      <div className="mad-section-head">
+        <div className="mad-page-title">Overview</div>
+        <div className="mad-page-sub">
           Every agent&apos;s state, live — nothing running that you can&apos;t see here.
         </div>
       </div>
 
       {demoAgents.length > 0 && (
-        <div
-          role="note"
-          style={{
-            background: T.panel2,
-            border: `1px solid ${T.copperDim}`,
-            borderRadius: 10,
-            padding: "12px 16px",
-            marginBottom: 20,
-            fontSize: 12.5,
-            color: T.dim,
-          }}
-        >
-          {demoNames} {demoAgents.length === 1 ? "is" : "are"} showing simulated
-          data. Open an agent page and upload a real CSV or JSON feed to see
-          real numbers — or try the samples at <code>public/sample-*.csv</code>.
+        <div role="note" className="mad-note">
+          {demoNames}: simulated data. Upload a real CSV or JSON feed on an
+          agent page to replace it — samples in <code>public/sample-*.csv</code>.
         </div>
       )}
 
-      <div style={{ display: "flex", gap: 12, marginBottom: 24, flexWrap: "wrap" }}>
+      <div className="mad-stat-row">
         <StatCard label="Listings seen" value={totalScanned} icon={Radar} />
         <StatCard label="Units purchased" value={unitsPurchased} icon={Wallet} />
         <StatCard label="Budget remaining" value={budgetRemaining} icon={Wallet} />
         <StatCard label="Blended ROI" value={roi} icon={TrendingUp} />
       </div>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-          gap: 14,
-        }}
-      >
+      <div className="mad-agent-grid">
         {AGENT_DEFS.map((d) => {
           const a = agents[d.id];
           const Icon = d.icon;
@@ -68,47 +47,20 @@ export function Overview({ agents, feeds, onOpen }) {
             <button
               key={d.id}
               onClick={() => onOpen(d.id)}
-              className="mad-btn"
-              style={{
-                textAlign: "left",
-                cursor: "pointer",
-                background: T.panel,
-                border: `1px solid ${T.line}`,
-                borderRadius: 12,
-                padding: 16,
-                color: "inherit",
-                font: "inherit",
-              }}
+              className="mad-btn mad-agent-card"
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginBottom: 10,
-                  gap: 8,
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <Icon size={16} color={T.copper} />
-                  <div style={{ fontWeight: 600, fontSize: 14 }}>{d.name}</div>
+              <div className="mad-agent-card-top">
+                <div className="mad-agent-card-id">
+                  <Icon size={16} />
+                  <div className="mad-agent-card-name">{d.name}</div>
                 </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div className="mad-agent-card-badges">
                   <DemoBadge mode={agentDataMode(d.id, ctx)} />
                   <StatusBadge status={a.status} />
                 </div>
               </div>
-              <div style={{ fontSize: 11.5, color: T.dim, marginBottom: 10 }}>{d.role}</div>
-              <div
-                style={{
-                  fontFamily: FONTS.mono,
-                  fontSize: 11.5,
-                  color: T.dim,
-                  borderTop: `1px solid ${T.line}`,
-                  paddingTop: 10,
-                  minHeight: 32,
-                }}
-              >
+              <div className="mad-agent-card-role">{d.role}</div>
+              <div className="mad-agent-card-log">
                 {a.logs[0] ? a.logs[0].text : "Awaiting first event…"}
               </div>
             </button>
@@ -116,17 +68,8 @@ export function Overview({ agents, feeds, onOpen }) {
         })}
       </div>
 
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          marginTop: 18,
-          fontSize: 11.5,
-          color: T.dim,
-        }}
-      >
-        <LayoutGrid size={13} color={T.dim} />
+      <div className="mad-footnote">
+        <LayoutGrid size={13} />
         Figures marked “Simulated feed” are demo placeholders, not real measurements.
       </div>
     </div>

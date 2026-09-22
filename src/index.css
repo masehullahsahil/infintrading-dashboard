@@ -93,7 +93,74 @@ body {
 }
 
 /* ---- buttons ---- */
+.mad-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  transition:
+    opacity 0.15s ease,
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.05s ease;
+}
+.mad-btn:hover {
+  opacity: 0.85;
+}
+.mad-btn:active {
+  transform: translateY(1px);
+}
+.mad-btn:focus-visible {
+  outline: 2px solid var(--mad-copper);
+  outline-offset: 2px;
+}
+.mad-btn:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+.mad-btn:disabled:hover {
+  opacity: 0.7;
+}
+.mad-btn-primary {
+  background: var(--mad-copper);
+  color: var(--mad-ink);
+  border: none;
+}
+.mad-btn-ghost {
+  background: transparent;
+  color: var(--mad-paper);
+  border: 1px solid var(--mad-line);
+}
+.mad-btn-dim {
+  background: transparent;
+  color: var(--mad-dim);
+  border: 1px solid var(--mad-line);
+}
+.mad-btn-lg {
+  padding: 9px 20px;
+  font-size: 13px;
+}
+
+/* ---- nav buttons ---- */
 .mad-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 8px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  margin-bottom: 4px;
+  width: 100%;
+  color: var(--mad-dim);
+  font: inherit;
   transition:
     background 0.15s ease,
     border-color 0.15s ease;
@@ -101,16 +168,40 @@ body {
 .mad-nav-btn:hover {
   background: var(--mad-panel-2);
 }
-.mad-btn {
-  transition: opacity 0.15s ease;
-}
-.mad-btn:hover {
-  opacity: 0.85;
-}
-.mad-nav-btn:focus-visible,
-.mad-btn:focus-visible {
+.mad-nav-btn:focus-visible {
   outline: 2px solid var(--mad-copper);
   outline-offset: 2px;
+}
+.mad-nav-btn-active {
+  border-color: var(--mad-copper-dim);
+  background: var(--mad-panel-2);
+  color: var(--mad-copper);
+}
+.mad-nav-btn-compact {
+  padding: 8px 12px;
+  margin-bottom: 0;
+  flex: 0 0 auto;
+  width: auto;
+}
+.mad-nav-btn-body {
+  flex: 1;
+  min-width: 0;
+}
+.mad-nav-btn-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--mad-dim);
+  white-space: nowrap;
+}
+.mad-nav-btn-active .mad-nav-btn-label {
+  color: var(--mad-paper);
+}
+.mad-nav-btn-caption {
+  font-size: 10.5px;
+  color: var(--mad-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ---- data tables ---- */
@@ -142,4 +233,402 @@ table.mad-table td {
   .mad-log-row {
     animation: none;
   }
+}
+
+/* ---- app shell ---- */
+.mad-app {
+  min-height: 100vh;
+  background: var(--mad-ink);
+  color: var(--mad-paper);
+  font-family: var(--mad-font-sans);
+  display: flex;
+  flex-direction: column;
+}
+.mad-layout {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+.mad-layout-narrow {
+  flex-direction: column;
+}
+.mad-main {
+  flex: 1;
+  min-width: 0;
+  padding: 28px;
+  overflow: auto;
+}
+.mad-main-narrow {
+  padding: 16px;
+}
+
+/* ---- ticker ---- */
+.mad-ticker-bar {
+  border-bottom: 1px solid var(--mad-line);
+  background: var(--mad-panel);
+  overflow: hidden;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.mad-ticker-track {
+  white-space: nowrap;
+  display: inline-flex;
+}
+.mad-ticker-item {
+  font-family: var(--mad-font-mono);
+  font-size: 12px;
+  color: var(--mad-dim);
+  padding: 0 28px;
+  border-right: 1px solid var(--mad-line);
+}
+
+/* ---- sidebar ---- */
+.mad-nav {
+  width: 232px;
+  min-width: 232px;
+  border-right: 1px solid var(--mad-line);
+  background: var(--mad-panel);
+  padding: 18px 12px;
+  flex-shrink: 0;
+}
+.mad-nav-narrow {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--mad-line);
+  background: var(--mad-panel);
+  flex-shrink: 0;
+}
+.mad-nav-brand {
+  padding: 0 8px 16px 8px;
+}
+.mad-nav-title {
+  font-family: var(--mad-font-display);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: 0.2px;
+}
+.mad-nav-sub {
+  font-size: 11px;
+  color: var(--mad-dim);
+  margin-top: 2px;
+}
+
+/* ---- overview ---- */
+.mad-page-title {
+  font-family: var(--mad-font-display);
+  font-size: 22px;
+  font-weight: 600;
+}
+.mad-page-sub {
+  font-size: 13px;
+  color: var(--mad-dim);
+  margin-top: 3px;
+}
+.mad-section-head {
+  margin-bottom: 22px;
+}
+.mad-note {
+  background: var(--mad-panel-2);
+  border: 1px solid var(--mad-copper-dim);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 12.5px;
+  color: var(--mad-dim);
+}
+.mad-stat-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.mad-agent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+.mad-agent-card {
+  text-align: left;
+  cursor: pointer;
+  background: var(--mad-panel);
+  border: 1px solid var(--mad-line);
+  border-radius: 12px;
+  padding: 16px;
+  color: inherit;
+  font: inherit;
+}
+.mad-agent-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  gap: 8px;
+}
+.mad-agent-card-id {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--mad-copper);
+}
+.mad-agent-card-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--mad-paper);
+}
+.mad-agent-card-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.mad-agent-card-role {
+  font-size: 11.5px;
+  color: var(--mad-dim);
+  margin-bottom: 10px;
+}
+.mad-agent-card-log {
+  font-family: var(--mad-font-mono);
+  font-size: 11.5px;
+  color: var(--mad-dim);
+  border-top: 1px solid var(--mad-line);
+  padding-top: 10px;
+  min-height: 32px;
+}
+.mad-footnote {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  font-size: 11.5px;
+  color: var(--mad-dim);
+}
+
+/* ---- stat cards ---- */
+.mad-stat {
+  background: var(--mad-panel);
+  border: 1px solid var(--mad-line);
+  border-radius: 10px;
+  padding: 14px 16px;
+  flex: 1;
+  min-width: 140px;
+}
+.mad-stat-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  color: var(--mad-dim);
+}
+.mad-stat-label {
+  font-size: 11px;
+  color: var(--mad-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.mad-stat-value {
+  font-family: var(--mad-font-display);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--mad-paper);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- page header ---- */
+.mad-pagehead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.mad-pagehead-id {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.mad-pagehead-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  background: var(--mad-panel-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--mad-line);
+  flex-shrink: 0;
+  color: var(--mad-copper);
+}
+.mad-pagehead-name {
+  font-family: var(--mad-font-display);
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.mad-pagehead-role {
+  font-size: 12px;
+  color: var(--mad-dim);
+}
+.mad-pagehead-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ---- badges ---- */
+.mad-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.mad-data-badge {
+  color: var(--mad-amber);
+  border: 1px solid var(--mad-amber);
+  border-radius: 999px;
+  padding: 3px 9px;
+}
+.mad-data-badge-live {
+  color: var(--mad-green);
+  border-color: var(--mad-green);
+}
+.mad-status {
+  color: var(--mad-dim);
+}
+.mad-status-running {
+  color: var(--mad-green);
+}
+
+/* ---- feed controls ---- */
+.mad-feedbar {
+  margin-bottom: 20px;
+}
+.mad-feedbar-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.mad-feedbar-row-spaced {
+  margin-bottom: 12px;
+}
+.mad-feedbar-hint {
+  font-size: 11.5px;
+  color: var(--mad-dim);
+}
+.mad-notice {
+  background: var(--mad-panel-2);
+  border: 1px solid var(--mad-amber);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  font-size: 12.5px;
+  color: var(--mad-paper);
+}
+.mad-notice-error {
+  border-color: var(--mad-red);
+}
+.mad-hidden-input {
+  display: none;
+}
+
+/* ---- panels & tables ---- */
+.mad-panel-card {
+  background: var(--mad-panel);
+  border: 1px solid var(--mad-line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.mad-panel-head {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--mad-line);
+  font-size: 11.5px;
+  color: var(--mad-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.mad-panel-head .mad-panel-head-icon {
+  color: var(--mad-green);
+}
+.mad-panel-head-plain {
+  text-transform: none;
+  letter-spacing: 0;
+}
+.mad-table-wrap {
+  max-height: 460px;
+  overflow: auto;
+}
+.mad-sim-note {
+  margin-top: 12px;
+  font-size: 11.5px;
+  color: var(--mad-dim);
+  font-family: var(--mad-font-mono);
+}
+
+/* ---- activity log ---- */
+.mad-log {
+  overflow-y: auto;
+}
+.mad-log-empty {
+  padding: 24px;
+  font-size: 12.5px;
+  color: var(--mad-dim);
+  font-family: var(--mad-font-mono);
+}
+.mad-log-row {
+  display: flex;
+  gap: 12px;
+  padding: 9px 16px;
+  border-bottom: 1px solid var(--mad-line);
+  font-family: var(--mad-font-mono);
+  font-size: 12.5px;
+}
+.mad-log-time {
+  color: var(--mad-dim);
+  min-width: 62px;
+  flex-shrink: 0;
+}
+
+/* ---- crash page ---- */
+.mad-crash {
+  min-height: 100vh;
+  background: var(--mad-ink);
+  color: var(--mad-paper);
+  font-family: var(--mad-font-sans);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.mad-crash-card {
+  background: var(--mad-panel);
+  border: 1px solid var(--mad-line);
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 440px;
+  text-align: center;
+}
+.mad-crash-title {
+  font-family: var(--mad-font-display);
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.mad-crash-body {
+  font-size: 13px;
+  color: var(--mad-dim);
+  margin-bottom: 20px;
 }
