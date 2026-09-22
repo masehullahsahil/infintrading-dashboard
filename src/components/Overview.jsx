@@ -1,20 +1,19 @@
-import { LayoutGrid, Radar, Wallet, TrendingUp } from "lucide-react";
+import { LayoutGrid, Radar, Target, TrendingUp } from "lucide-react";
 import { AGENT_DEFS } from "../lib/agents";
 import { agentDataMode, DATA_MODE } from "../lib/dataSource";
+import { summarizeDeals } from "../lib/deals";
 import { StatCard } from "./StatCard";
 import { StatusBadge } from "./StatusBadge";
 import { DemoBadge } from "./DemoBadge";
 
-export function Overview({ agents, feeds, onOpen }) {
+export function Overview({ agents, feeds, deals, onOpen }) {
   const ctx = { feeds };
   const demoAgents = AGENT_DEFS.filter(
     (d) => agentDataMode(d.id, ctx) === DATA_MODE.DEMO
   );
   const demoNames = demoAgents.map((d) => d.name).join(", ");
   const totalScanned = agents.evaluator.metrics[0];
-  const unitsPurchased = agents.bookkeeper.metrics[0];
-  const budgetRemaining = agents.bookkeeper.metrics[1];
-  const roi = agents.bookkeeper.metrics[2];
+  const dealSummary = summarizeDeals(deals);
 
   return (
     <div>
@@ -34,9 +33,9 @@ export function Overview({ agents, feeds, onOpen }) {
 
       <div className="mad-stat-row">
         <StatCard label="Listings seen" value={totalScanned} icon={Radar} />
-        <StatCard label="Units purchased" value={unitsPurchased} icon={Wallet} />
-        <StatCard label="Budget remaining" value={budgetRemaining} icon={Wallet} />
-        <StatCard label="Blended ROI" value={roi} icon={TrendingUp} />
+        <StatCard label="Deals tracked" value={dealSummary.tracked} icon={Target} />
+        <StatCard label="Closing soon" value={dealSummary.closingSoon} icon={Target} />
+        <StatCard label="Deals won" value={dealSummary.won} icon={TrendingUp} />
       </div>
 
       <div className="mad-agent-grid">

@@ -18,6 +18,9 @@ export const DATA_MODE = {
  * @returns {"demo" | "live"}
  */
 export function agentDataMode(agentId, { feeds }) {
+  // The Deal Tracker is user state (tracked lots), never a feed — it is
+  // never "simulated".
+  if (agentId === "deals") return DATA_MODE.LIVE;
   const rows = feeds?.[agentId];
   return rows && rows.length > 0 ? DATA_MODE.LIVE : DATA_MODE.DEMO;
 }

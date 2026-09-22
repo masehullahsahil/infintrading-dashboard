@@ -63,6 +63,8 @@ export function AgentPage({
   onToggle,
   onFeedLoaded,
   onClearFeed,
+  onTrackDeal,
+  isTracked,
 }) {
   const running = agent.status === "running";
   const contract = FEED_CONTRACTS[def.id];
@@ -71,6 +73,10 @@ export function AgentPage({
   const isLiveSource = feedSource && feedSource.source === "live";
   const showLiveSwitch =
     def.id === "evaluator" && liveAvailable && !isLiveSource;
+  const rowAction =
+    def.id === "evaluator" && onTrackDeal
+      ? { label: "Track", onClick: onTrackDeal, isActive: isTracked }
+      : null;
 
   return (
     <div>
@@ -123,7 +129,7 @@ export function AgentPage({
       </div>
 
       {dataMode === DATA_MODE.LIVE ? (
-        <FeedTable contract={contract} rows={feed} />
+        <FeedTable contract={contract} rows={feed} rowAction={rowAction} />
       ) : (
         <>
           <div className="mad-panel-card">

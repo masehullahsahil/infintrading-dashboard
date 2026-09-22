@@ -1,7 +1,7 @@
 # InfinTrading · Agent Ops Dashboard
 
 A live operations dashboard for the InfinTrading trading agents — **Finder**,
-**Evaluator**, **Buyer**, and **Bookkeeper**. Watch every agent's activity,
+**Evaluator**, **Buyer**, and **Deal Tracker**. Watch every agent's activity,
 metrics, and status in one dark "trade floor" view.
 
 ## Quickstart
@@ -91,19 +91,14 @@ Metrics: Listings seen (rows) · Matched to comp · Avg. margin.
 
 Metrics: Offers sent (rows) · Active threads (`offer_sent`/`countered`/`no_response`) · Accept rate (`accepted` ÷ decided).
 
-### Bookkeeper — `ledger.csv`
+### Deal Tracker
 
-| Column           | Required | Notes                                                              |
-| ---------------- | -------- | ------------------------------------------------------------------ |
-| `model`          | **yes**  | e.g. `ThinkPad X1 Carbon Gen9`                                     |
-| `purchase_price` | **yes**  | What we paid, in USD                                               |
-| `purchase_date`  | no       | `YYYY-MM-DD`                                                       |
-| `resale_price`   | no       | Sale price in USD — blank means still held                         |
-| `fees`           | no       | Marketplace/shipping fees in USD                                   |
-| `seller`         | no       | Who we bought from                                                 |
-
-Metrics: Units purchased (rows) · Budget remaining (USD 10,000 starting budget
-minus spend) · Blended ROI over sold items: `(resale − cost − fees) ÷ cost`.
+Not a feed — user state. Flag lots from the Evaluator board with the Track
+button and they appear here with closing countdowns, your bid plan (the
+Evaluator's max bid carried over as the suggested ceiling), and outcome
+tracking (watching → bidding → won / lost / passed). Deals persist in
+`localStorage`. The tracker never bids or contacts sellers — it tracks, you
+decide.
 
 ## Automatic collection status
 
@@ -123,9 +118,9 @@ Still manual (upload a file on each agent's page):
 - **Buyer** — offer tracking: an outbox/inbox for offers (marketplace
   messaging APIs or email parsing) that records status transitions instead of
   hand-entered rows.
-- **Bookkeeper** — ledger sync: imports from the actual payment/accounting
-  source of truth (bank/processor exports or accounting software API) rather
-  than a hand-built CSV.
+- **Deal Tracker** — later: closing-time push reminders (cron or service worker)
+  ahead of auction closes, so a nudge reaches you even with the dashboard
+  closed.
 
 Plus the cross-cutting pieces: server-side validation of incoming data, and
 authentication for any write-capable integration. The feed contracts above
@@ -158,7 +153,6 @@ public/
   sample-listings.csv      try the Evaluator's real-data path
   sample-suppliers.csv     try the Finder's real-data path
   sample-offers.csv        try the Buyer's real-data path
-  sample-ledger.csv        try the Bookkeeper's real-data path
   favicon.svg
 ```
 
