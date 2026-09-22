@@ -24,6 +24,22 @@ function formatCell(value, col) {
   return String(value);
 }
 
+function renderCell(row, col) {
+  const value = row[col.key];
+  if (col.link && row[col.link]) {
+    const href = String(row[col.link]).trim();
+    if (/^https?:\/\//i.test(href)) {
+      const label = formatCell(value, col);
+      return (
+        <a href={href} target="_blank" rel="noreferrer">
+          {label}
+        </a>
+      );
+    }
+  }
+  return formatCell(value, col);
+}
+
 export function FeedTable({ contract, rows }) {
   const shown = rows.slice(0, MAX_TABLE_ROWS);
   return (
@@ -50,7 +66,7 @@ export function FeedTable({ contract, rows }) {
             {shown.map((r, i) => (
               <tr key={i}>
                 {contract.tableColumns.map((c) => (
-                  <td key={c.key}>{formatCell(r[c.key], c)}</td>
+                  <td key={c.key}>{renderCell(r, c)}</td>
                 ))}
               </tr>
             ))}
