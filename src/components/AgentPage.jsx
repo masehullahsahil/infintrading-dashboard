@@ -18,6 +18,11 @@ import { StatCard } from "./StatCard";
 import { LogList } from "./LogList";
 import { FeedControls } from "./FeedControls";
 import { FeedTable } from "./FeedTable";
+import { SupplierCandidates } from "./SupplierCandidates";
+import {
+  pendingCandidates,
+  approvedSupplierRows,
+} from "../lib/supplierCandidates";
 
 function LiveBadge({ liveMeta }) {
   const when = liveMeta && liveMeta.scan_at ? liveMeta.scan_at : null;
@@ -67,20 +72,38 @@ export function AgentPage({
   feedSource,
   liveMeta,
   liveAvailable,
+  supplierLiveAvailable,
   onUseLiveFeed,
+  onUseLiveSuppliers,
   onToggle,
   onFeedLoaded,
   onClearFeed,
   onTrackDeal,
   isTracked,
+  candidates,
+  candidateDecisions,
+  onApproveCandidate,
+  onDismissCandidate,
 }) {
   const running = agent.status === "running";
   const contract = FEED_CONTRACTS[def.id];
-  const feed = feeds[def.id];
-  const dataMode = agentDataMode(def.id, { feeds });
+  const isFinder = def.id === "finder";
+  // Approved candidates merge into the roster view as under_review rows.
+  const approvedRows =
+    isFinder && candidates && candidateDecisions
+      ? approvedSupplierRows(candidates, candidateDecisions)
+      : [];
+  const feed = isFinder && feeds[def.id] ? [...feeds[def.id], ...approvedRows] : feeds[def.id];
+  const dataMode = agentDataMode(def.id, { feeds: { ...feeds, [def.id]: feed } });
   const isLiveSource = feedSource && feedSource.source === "live";
   const showLiveSwitch =
-    def.id === "evaluator" && liveAvailable && !isLiveSource;
+    ((def.id === "evaluator" && liveAvailable) ||
+      (isFinder && supplierLiveAvailable)) &&
+    !isLiveSource;
+  const pending =
+    isFinder && candidates && candidateDecisions
+      ? pendingCandidates(candidates, candidateDecisions)
+      : [];
   const rowAction =
     def.id === "evaluator" && onTrackDeal
       ? { label: "Track", onClick: onTrackDeal, isActive: isTracked }
@@ -126,7 +149,7 @@ export function AgentPage({
       {showLiveSwitch && (
         <div style={{ marginBottom: 16 }}>
           <button
-            onClick={onUseLiveFeed}
+            onClick={isFinder ? onUseLiveSuppliers : onUseLiveFeed}
             className="mad-btn"
             style={{
               cursor: "pointer",
@@ -147,6 +170,14 @@ export function AgentPage({
             your uploaded file stays until you switch.
           </span>
         </div>
+      )}
+
+      {isFinder && pending.length > 0 && (
+        <SupplierCandidates
+          candidates={pending}
+          onApprove={onApproveCandidate}
+          onDismiss={onDismissCandidate}
+        />
       )}
 
       <FeedControls
@@ -215,7 +246,7 @@ export function AgentPage({
           </div>
           <div className="mad-sim-note">
             Feed: simulated —{" "}
-            {def.id === "evaluator"
+            {def.id === "evaluator" || def.id === "finder"
               ? "the automatic scan feed loads on its own when no file is uploaded."
               : "automatic collection (scraper/API) is not wired yet; feed it a file above or see the README."}
           </div>

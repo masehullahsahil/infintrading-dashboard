@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { fetchLiveFeed, liveIsNewer, LIVE_FEED_LISTINGS_URL } from "./liveFeed";
+import { fetchLiveFeed, fetchLiveSuppliers, fetchLiveCandidates, liveIsNewer, LIVE_FEED_LISTINGS_URL } from "./liveFeed";
 
 const GOOD_ROWS = [
   {
@@ -99,5 +99,63 @@ describe("liveIsNewer", () => {
   it("is false when meta has no timestamp", () => {
     expect(liveIsNewer({}, { source: "live", at: "2020-01-01T00:00:00+00:00" })).toBe(false);
     expect(liveIsNewer(null, null)).toBe(false);
+  });
+});
+
+describe("fetchLiveSuppliers", () => {
+  const GOOD_SUPPLIERS = [
+    {
+      supplier_name: "Illinois CMS iBid Electronics",
+      supplier_type: "Government / Institutional",
+      source_channel: "Public online auction",
+      contact: "https://ibid.illinois.gov/",
+      found_date: "2026-09-21",
+      status: "active",
+    },
+  ];
+  const mockSuppliersFetch = ({ rows = GOOD_SUPPLIERS, ok = true } = {}) =>
+    vi.fn(async () => ({
+      ok,
+      text: async () => (typeof rows === "string" ? rows : JSON.stringify(rows)),
+    }));
+
+  it("returns validated supplier rows on success", async () => {
+    const result = await fetchLiveSuppliers(mockSuppliersFetch());
+    expect(result).not.toBeNull();
+    expect(result.rows).toHaveLength(1);
+    expect(result.rows[0].supplier_name).toBe("Illinois CMS iBid Electronics");
+  });
+
+  it("returns null when the roster is unreachable", async () => {
+    expect(await fetchLiveSuppliers(mockSuppliersFetch({ ok: false }))).toBeNull();
+  });
+
+  it("returns null when rows fail the finder contract", async () => {
+    expect(await fetchLiveSuppliers(mockSuppliersFetch({ rows: "not json{{{" }))).toBeNull();
+  });
+});
+
+describe("fetchLiveCandidates", () => {
+  const GOOD_CANDIDATES = [
+    { company: "GW Tech Parts", url: "https://gwtechparts.com/collections/all", status: "proposed" },
+  ];
+  const mockCandidatesFetch = ({ data = GOOD_CANDIDATES, ok = true } = {}) =>
+    vi.fn(async () => ({
+      ok,
+      json: async () => data,
+    }));
+
+  it("returns the candidate array on success", async () => {
+    const result = await fetchLiveCandidates(mockCandidatesFetch());
+    expect(result).toHaveLength(1);
+    expect(result[0].company).toBe("GW Tech Parts");
+  });
+
+  it("returns an empty array when there are no candidates", async () => {
+    expect(await fetchLiveCandidates(mockCandidatesFetch({ data: [] }))).toEqual([]);
+  });
+
+  it("returns null when the feed is unreachable", async () => {
+    expect(await fetchLiveCandidates(mockCandidatesFetch({ ok: false }))).toBeNull();
   });
 });

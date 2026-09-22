@@ -22,10 +22,16 @@ export default function AgentDashboard() {
     deals,
     liveMeta,
     liveAvailable,
+    supplierLiveAvailable,
+    candidates,
+    candidateDecisions,
     toggleAgent,
     applyFeed,
     clearFeed,
     useLiveFeed,
+    useLiveSuppliers,
+    approveSupplierCandidate,
+    dismissSupplierCandidate,
     trackDeal,
     updateDeal,
     removeDeal,
@@ -60,11 +66,17 @@ export default function AgentDashboard() {
               feedSource={feedSources[active]}
               liveMeta={active === "evaluator" ? liveMeta : null}
               liveAvailable={active === "evaluator" && liveAvailable}
+              supplierLiveAvailable={active === "finder" && supplierLiveAvailable}
               onUseLiveFeed={useLiveFeed}
+              onUseLiveSuppliers={useLiveSuppliers}
               onToggle={() => toggleAgent(active)}
               onFeedLoaded={applyFeed}
               onClearFeed={clearFeed}
               onTrackDeal={active === "evaluator" ? trackDeal : undefined}
+              candidates={active === "finder" ? candidates : undefined}
+              candidateDecisions={active === "finder" ? candidateDecisions : undefined}
+              onApproveCandidate={approveSupplierCandidate}
+              onDismissCandidate={dismissSupplierCandidate}
               isTracked={
                 active === "evaluator"
                   ? (row) => trackedIds.has(dealIdFromListing(row))

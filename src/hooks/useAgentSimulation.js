@@ -2,14 +2,20 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { AGENT_DEFS, SEED_SOURCE, seedAgent, seedMetrics } from "../lib/agents";
 import { rand } from "../lib/mockGenerators";
 import { FEED_CONTRACTS } from "../lib/agentFeeds";
-import { fetchLiveFeed, liveIsNewer } from "../lib/liveFeed";
+import { fetchLiveFeed, fetchLiveSuppliers, fetchLiveCandidates, liveIsNewer } from "../lib/liveFeed";
 import {
   createDealFromListing,
   dealIdFromListing,
 } from "../lib/deals";
+import {
+  EMPTY_CANDIDATE_DECISIONS,
+  approveCandidate as approveCandidateDecision,
+  dismissCandidate as dismissCandidateDecision,
+} from "../lib/supplierCandidates";
 
 const STORAGE_KEY = "mad:v2";
 const LEGACY_STORAGE_KEY = "mad:v1";
+const CANDIDATE_DECISIONS_KEY = "mad:candidate-decisions";
 const MAX_STORED_ROWS = 200;
 const TICK_MS = 2600;
 const MAX_LOGS = 40;
@@ -91,6 +97,15 @@ function loadDeals() {
   return raw.filter((d) => d && typeof d.id === "string" && typeof d.lot === "string");
 }
 
+// Supplier candidate decisions (approved / dismissed) are the operator's own
+// state, like tracked deals: rehydrate the lists, dropping anything malformed.
+function loadCandidateDecisions() {
+  const raw = loadStored(CANDIDATE_DECISIONS_KEY);
+  if (!raw || typeof raw !== "object") return EMPTY_CANDIDATE_DECISIONS;
+  const clean = (v) => (Array.isArray(v) ? v.filter((x) => typeof x === "string") : []);
+  return { approved: clean(raw.approved), dismissed: clean(raw.dismissed) };
+}
+
 function initialState() {
   const feeds = loadFeeds();
   const feedSources = loadSources();
@@ -130,11 +145,15 @@ export function useAgentSimulation() {
   const [deals, setDeals] = useState(loadDeals);
   const [liveMeta, setLiveMeta] = useState(null);
   const [liveAvailable, setLiveAvailable] = useState(false);
+  const [supplierLiveAvailable, setSupplierLiveAvailable] = useState(false);
+  const [candidates, setCandidates] = useState([]);
+  const [candidateDecisions, setCandidateDecisions] = useState(loadCandidateDecisions);
   const [ticker, setTicker] = useState(["System online — 4 agents initialized"]);
   const lastSeedRef = useRef({});
   const prevTopLogs = useRef({});
   const lastSavedRef = useRef("");
   const liveAttemptedRef = useRef(false);
+  const supplierLiveAttemptedRef = useRef(false);
 
   // Demo feed: one random running agent emits an event every tick.
   // An agent stops emitting mock events once its real feed is loaded, so
@@ -216,6 +235,7 @@ export function useAgentSimulation() {
     lastSavedRef.current = payload;
     try {
       window.localStorage.setItem(STORAGE_KEY, payload);
+      window.localStorage.setItem(CANDIDATE_DECISIONS_KEY, JSON.stringify(candidateDecisions));
     } catch {
       // Storage full or unavailable — dashboard works fine without it.
     }
@@ -341,6 +361,54 @@ export function useAgentSimulation() {
     return true;
   }, [applyFeed]);
 
+  // Supplier live feed: once per page load, pull the Finder's automatic roster.
+  // Same rules as the Evaluator: applies when there is no roster yet, or when
+  // the current roster also came from the live pipe. A manual upload wins.
+  useEffect(() => {
+    if (supplierLiveAttemptedRef.current) return;
+    supplierLiveAttemptedRef.current = true;
+    let cancelled = false;
+    fetchLiveSuppliers().then((live) => {
+      if (cancelled || !live) return;
+      setSupplierLiveAvailable(true);
+      const current = feedSources.finder;
+      const shouldApply = !feeds.finder || (current && current.source === "live");
+      if (shouldApply) {
+        applyFeed("finder", live.rows, "live supplier roster", "live");
+      }
+    });
+    fetchLiveCandidates().then((rows) => {
+      if (cancelled || !rows) return;
+      setCandidates(rows);
+    });
+    return () => {
+      cancelled = true;
+    };
+    // Once on mount; feeds/feedSources come from boot state.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Explicit operator action: switch the Finder back to the live roster.
+  const useLiveSuppliers = useCallback(async () => {
+    const live = await fetchLiveSuppliers();
+    if (!live) return false;
+    setSupplierLiveAvailable(true);
+    applyFeed("finder", live.rows, "live supplier roster", "live");
+    return true;
+  }, [applyFeed]);
+
+  // Candidate review queue decisions.
+  const approveSupplierCandidate = useCallback((candidate) => {
+    setCandidateDecisions((prev) => approveCandidateDecision(prev, candidate));
+    setTicker((prev) =>
+      [...prev, `FINDER · Approved candidate ${candidate.company || "supplier"} — merged into roster as under review`].slice(-10)
+    );
+  }, []);
+
+  const dismissSupplierCandidate = useCallback((candidate) => {
+    setCandidateDecisions((prev) => dismissCandidateDecision(prev, candidate));
+  }, []);
+
   return {
     agents,
     ticker,
@@ -349,10 +417,16 @@ export function useAgentSimulation() {
     deals,
     liveMeta,
     liveAvailable,
+    supplierLiveAvailable,
+    candidates,
+    candidateDecisions,
     toggleAgent,
     applyFeed,
     clearFeed,
     useLiveFeed,
+    useLiveSuppliers,
+    approveSupplierCandidate,
+    dismissSupplierCandidate,
     trackDeal,
     updateDeal,
     removeDeal,
