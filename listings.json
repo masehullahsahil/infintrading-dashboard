@@ -2,6 +2,9 @@
  {
   "brand": "Lenovo",
   "raw_model": "Lot #20664 - Pallet of UNTESTED Lenovo Laptops - (260 Approx)",
+  "source": "iBid IL",
+  "qty": "260",
+  "condition": "untested",
   "cpu_family": "",
   "gen": "",
   "asking_price": "4050.0",
@@ -20,6 +23,9 @@
  {
   "brand": "Lenovo",
   "raw_model": "Lot #20665 - Pallet of UNTESTED Lenovo Laptops - (250 Approx)",
+  "source": "iBid IL",
+  "qty": "250",
+  "condition": "untested",
   "cpu_family": "",
   "gen": "",
   "asking_price": "4605.0",
@@ -38,6 +44,9 @@
  {
   "brand": "Microsoft",
   "raw_model": "Bulk Lot of 457 Microsoft Surface Laptop Go - i5 (Lot# 29562-13)",
+  "source": "GovDeals",
+  "qty": "457",
+  "condition": "reserve not met",
   "cpu_family": "",
   "gen": "",
   "asking_price": "34500.0",
@@ -56,6 +65,9 @@
  {
   "brand": "Dell",
   "raw_model": "Lot of 7 Latitude Laptops (Lot# 384-1604) - Mooresville NC",
+  "source": "GovDeals",
+  "qty": "7",
+  "condition": "used/as-is",
   "cpu_family": "",
   "gen": "",
   "asking_price": "750.0",
