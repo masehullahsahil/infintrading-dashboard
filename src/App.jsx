@@ -12,8 +12,18 @@ import { AgentPage } from "./components/AgentPage";
 
 export default function AgentDashboard() {
   const [active, setActive] = useState("overview");
-  const { agents, ticker, feeds, toggleAgent, applyFeed, clearFeed } =
-    useAgentSimulation();
+  const {
+    agents,
+    ticker,
+    feeds,
+    feedSources,
+    liveMeta,
+    liveAvailable,
+    toggleAgent,
+    applyFeed,
+    clearFeed,
+    useLiveFeed,
+  } = useAgentSimulation();
   const narrow = useIsNarrow();
 
   return (
@@ -31,6 +41,10 @@ export default function AgentDashboard() {
               def={AGENT_DEFS.find((d) => d.id === active)}
               agent={agents[active]}
               feeds={feeds}
+              feedSource={feedSources[active]}
+              liveMeta={active === "evaluator" ? liveMeta : null}
+              liveAvailable={active === "evaluator" && liveAvailable}
+              onUseLiveFeed={useLiveFeed}
               onToggle={() => toggleAgent(active)}
               onFeedLoaded={applyFeed}
               onClearFeed={clearFeed}

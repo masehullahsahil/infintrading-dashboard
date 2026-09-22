@@ -1,0 +1,55 @@
+// Live Evaluator feed: published by the scheduled Finder/Evaluator scans to
+// the repo's data/live-feed branch (listings.json + meta.json). The dashboard
+// fetches it on load so the Evaluator board updates automatically — no
+// uploads needed. A manual upload always wins: it marks the feed source as
+// "upload" and the live feed will not overwrite it until the operator clears
+// it or explicitly switches back to live.
+
+import { FEED_CONTRACTS } from "./agentFeeds";
+
+export const LIVE_FEED_BASE =
+  "https://raw.githubusercontent.com/masehullahsahil/infintrading-dashboard/data/live-feed";
+
+export const LIVE_FEED_LISTINGS_URL = `${LIVE_FEED_BASE}/listings.json`;
+export const LIVE_FEED_META_URL = `${LIVE_FEED_BASE}/meta.json`;
+
+/**
+ * Fetch and validate the live feed.
+ * @returns {Promise<{ rows: object[], meta: object } | null>} — null when the
+ *   feed is unreachable or fails contract validation. Never throws.
+ */
+export async function fetchLiveFeed(fetchImpl = fetch) {
+  let listingsRes;
+  try {
+    listingsRes = await fetchImpl(LIVE_FEED_LISTINGS_URL, { cache: "no-store" });
+  } catch {
+    return null; // offline or DNS failure — stay on whatever feed we had
+  }
+  if (!listingsRes || !listingsRes.ok) return null;
+  let text;
+  try {
+    text = await listingsRes.text();
+  } catch {
+    return null;
+  }
+  const contract = FEED_CONTRACTS.evaluator;
+  const parsed = contract.parseText(text, "listings.json");
+  if (parsed.error || !parsed.rows || parsed.rows.length === 0) return null;
+
+  let meta = null;
+  try {
+    const metaRes = await fetchImpl(LIVE_FEED_META_URL, { cache: "no-store" });
+    if (metaRes && metaRes.ok) meta = await metaRes.json();
+  } catch {
+    meta = null; // meta is a nicety; the rows are the payload
+  }
+  return { rows: parsed.rows, meta };
+}
+
+/** True when the live scan is newer than the feed the operator currently has. */
+export function liveIsNewer(liveMeta, currentSource) {
+  if (!liveMeta || !liveMeta.scan_at) return false;
+  if (!currentSource || currentSource.source !== "live") return true;
+  if (!currentSource.at) return true;
+  return new Date(liveMeta.scan_at) > new Date(currentSource.at);
+}

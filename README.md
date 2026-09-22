@@ -105,18 +105,21 @@ Metrics: Offers sent (rows) · Active threads (`offer_sent`/`countered`/`no_resp
 Metrics: Units purchased (rows) · Budget remaining (USD 10,000 starting budget
 minus spend) · Blended ROI over sold items: `(resale − cost − fees) ÷ cost`.
 
-## Still needed for automatic collection
+## Automatic collection status
 
-The dashboard is ready to *display* real data, but nothing collects it yet —
-feeds are manual uploads. Making the agents truly live means building, per
-agent:
+**Evaluator — LIVE.** The scheduled Finder/Evaluator scans publish
+`listings.json` + `meta.json` to the repo's `data/live-feed` branch after every
+run (morning full scan + evening changes check). The dashboard fetches that
+feed on load (`src/lib/liveFeed.js`) and the Evaluator board updates itself —
+no uploads needed. A manual upload always wins: it marks the feed source as
+"upload" and the live feed will not overwrite it until the operator clears it
+or clicks "Switch to live feed".
 
-- **Finder** — supplier discovery: scrapers or API integrations for
-  liquidation auction houses, B2B wholesale marketplaces, and broker lists,
-  plus dedupe against the existing roster.
-- **Evaluator** — listing ingestion: scheduled runs of the listing scouts
-  (e.g. the existing `scout_parser.py` output wired to an upload/endpoint),
-  comp matching, and margin estimation.
+Still manual (upload a file on each agent's page):
+
+- **Finder** — supplier roster: scrapers or API integrations for liquidation
+  auction houses, B2B wholesale marketplaces, and broker lists, plus dedupe
+  against the existing roster.
 - **Buyer** — offer tracking: an outbox/inbox for offers (marketplace
   messaging APIs or email parsing) that records status transitions instead of
   hand-entered rows.
@@ -124,9 +127,9 @@ agent:
   source of truth (bank/processor exports or accounting software API) rather
   than a hand-built CSV.
 
-Plus the cross-cutting pieces: a scheduler, server-side validation of
-incoming data, and authentication for any write-capable integration. None of
-this is built — the feed contracts above are the documented handoff point.
+Plus the cross-cutting pieces: server-side validation of incoming data, and
+authentication for any write-capable integration. The feed contracts above
+are the documented handoff point.
 
 ## Project structure
 

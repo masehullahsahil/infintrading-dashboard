@@ -2,12 +2,22 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { AGENT_DEFS, SEED_SOURCE, seedAgent, seedMetrics } from "../lib/agents";
 import { rand } from "../lib/mockGenerators";
 import { FEED_CONTRACTS } from "../lib/agentFeeds";
+import { fetchLiveFeed, liveIsNewer } from "../lib/liveFeed";
 
 const STORAGE_KEY = "mad:v2";
 const LEGACY_STORAGE_KEY = "mad:v1";
 const MAX_STORED_ROWS = 200;
 const TICK_MS = 2600;
 const MAX_LOGS = 40;
+
+// Where a live feed came from: "live" (automatic scan) or "upload" (manual
+// file). A manual upload always wins — the live fetcher never overwrites it.
+const EMPTY_SOURCES = {
+  finder: null,
+  evaluator: null,
+  buyer: null,
+  bookkeeper: null,
+};
 
 const EMPTY_FEEDS = {
   finder: null,
@@ -49,6 +59,20 @@ function loadFeeds() {
   return { ...EMPTY_FEEDS };
 }
 
+function loadSources() {
+  const v2 = loadStored(STORAGE_KEY);
+  if (v2 && v2.feedSources && typeof v2.feedSources === "object") {
+    const sources = { ...EMPTY_SOURCES };
+    for (const id of Object.keys(sources)) {
+      const s = v2.feedSources[id];
+      sources[id] =
+        s && (s.source === "live" || s.source === "upload") ? s : null;
+    }
+    return sources;
+  }
+  return { ...EMPTY_SOURCES };
+}
+
 function loadStatuses() {
   return (
     loadStored(STORAGE_KEY)?.statuses ?? loadStored(LEGACY_STORAGE_KEY)?.statuses ?? null
@@ -57,6 +81,7 @@ function loadStatuses() {
 
 function initialState() {
   const feeds = loadFeeds();
+  const feedSources = loadSources();
   const statuses = loadStatuses();
   const agents = {};
   AGENT_DEFS.forEach((d) => {
@@ -77,7 +102,7 @@ function initialState() {
       ];
     }
   });
-  return { agents, feeds };
+  return { agents, feeds, feedSources };
 }
 
 /**
@@ -89,10 +114,14 @@ export function useAgentSimulation() {
   const [boot] = useState(initialState);
   const [agents, setAgents] = useState(boot.agents);
   const [feeds, setFeeds] = useState(boot.feeds);
+  const [feedSources, setFeedSources] = useState(boot.feedSources);
+  const [liveMeta, setLiveMeta] = useState(null);
+  const [liveAvailable, setLiveAvailable] = useState(false);
   const [ticker, setTicker] = useState(["System online — 4 agents initialized"]);
   const lastSeedRef = useRef({});
   const prevTopLogs = useRef({});
   const lastSavedRef = useRef("");
+  const liveAttemptedRef = useRef(false);
 
   // Demo feed: one random running agent emits an event every tick.
   // An agent stops emitting mock events once its real feed is loaded, so
@@ -159,7 +188,7 @@ export function useAgentSimulation() {
     }
   }, [agents]);
 
-  // Persist pause state + real feeds; rehydrated on next load.
+  // Persist pause state + real feeds + feed provenance; rehydrated on next load.
   useEffect(() => {
     const statuses = {};
     const storedFeeds = {};
@@ -167,7 +196,7 @@ export function useAgentSimulation() {
       statuses[d.id] = agents[d.id].status;
       storedFeeds[d.id] = feeds[d.id] ? feeds[d.id].slice(0, MAX_STORED_ROWS) : null;
     });
-    const payload = JSON.stringify({ statuses, feeds: storedFeeds });
+    const payload = JSON.stringify({ statuses, feeds: storedFeeds, feedSources });
     if (payload === lastSavedRef.current) return;
     lastSavedRef.current = payload;
     try {
@@ -187,10 +216,14 @@ export function useAgentSimulation() {
     }));
   }, []);
 
-  const applyFeed = useCallback((agentId, rows, sourceLabel) => {
+  const applyFeed = useCallback((agentId, rows, sourceLabel, source = "upload") => {
     const contract = FEED_CONTRACTS[agentId];
     const line = `Loaded ${rows.length} real ${contract.recordNoun} from ${sourceLabel}`;
     setFeeds((prev) => ({ ...prev, [agentId]: rows }));
+    setFeedSources((prev) => ({
+      ...prev,
+      [agentId]: { source, at: new Date().toISOString() },
+    }));
     setAgents((prev) => ({
       ...prev,
       [agentId]: {
@@ -209,6 +242,7 @@ export function useAgentSimulation() {
     const contract = FEED_CONTRACTS[agentId];
     const line = `Real ${contract.recordNoun} cleared — back to simulated feed`;
     setFeeds((prev) => ({ ...prev, [agentId]: null }));
+    setFeedSources((prev) => ({ ...prev, [agentId]: null }));
     setAgents((prev) => ({
       ...prev,
       [agentId]: {
@@ -223,5 +257,56 @@ export function useAgentSimulation() {
     setTicker((prev) => [...prev, `${contract.id.toUpperCase()} · ${line}`].slice(-10));
   }, []);
 
-  return { agents, ticker, feeds, toggleAgent, applyFeed, clearFeed };
+  // Live feed: once per page load, pull the Evaluator's automatic scan feed.
+  // Applies when there is no feed yet, or when the current feed also came
+  // from the live pipe and the scan is newer. A manual upload always wins.
+  useEffect(() => {
+    if (liveAttemptedRef.current) return;
+    liveAttemptedRef.current = true;
+    let cancelled = false;
+    fetchLiveFeed().then((live) => {
+      if (cancelled || !live) return;
+      setLiveMeta(live.meta);
+      setLiveAvailable(true);
+      const current = feedSources.evaluator;
+      const shouldApply =
+        !feeds.evaluator ||
+        (current && current.source === "live" && liveIsNewer(live.meta, current));
+      if (shouldApply) {
+        const when =
+          live.meta && live.meta.scan_at ? `live scan ${live.meta.scan_at}` : "live scan";
+        applyFeed("evaluator", live.rows, when, "live");
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+    // Once on mount; feeds/feedSources come from boot state.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Explicit operator action: switch the Evaluator back to the live feed.
+  const useLiveFeed = useCallback(async () => {
+    const live = await fetchLiveFeed();
+    if (!live) return false;
+    setLiveMeta(live.meta);
+    setLiveAvailable(true);
+    const when =
+      live.meta && live.meta.scan_at ? `live scan ${live.meta.scan_at}` : "live scan";
+    applyFeed("evaluator", live.rows, when, "live");
+    return true;
+  }, [applyFeed]);
+
+  return {
+    agents,
+    ticker,
+    feeds,
+    feedSources,
+    liveMeta,
+    liveAvailable,
+    toggleAgent,
+    applyFeed,
+    clearFeed,
+    useLiveFeed,
+  };
 }
