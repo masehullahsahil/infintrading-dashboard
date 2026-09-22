@@ -4,23 +4,13 @@
 
 import { useRef, useState } from "react";
 import { Upload, Trash2 } from "lucide-react";
-import { T } from "../theme";
 import { parseFeedFile } from "../lib/agentFeeds";
 
 function Notice({ tone, children }) {
-  const color = tone === "error" ? T.red : T.amber;
   return (
     <div
       role={tone === "error" ? "alert" : "note"}
-      style={{
-        background: T.panel2,
-        border: `1px solid ${color}`,
-        borderRadius: 10,
-        padding: "10px 14px",
-        marginBottom: 16,
-        fontSize: 12.5,
-        color: T.paper,
-      }}
+      className={tone === "error" ? "mad-notice mad-notice-error" : "mad-notice"}
     >
       {children}
     </div>
@@ -59,60 +49,22 @@ export function FeedControls({ contract, hasFeed, onFeedLoaded, onClearFeed }) {
   const showNotices = feedError || feedWarnings.length > 0;
 
   return (
-    <div style={{ marginBottom: 20 }}>
-      <div
-        style={{
-          display: "flex",
-          gap: 10,
-          flexWrap: "wrap",
-          alignItems: "center",
-          marginBottom: showNotices ? 12 : 0,
-        }}
-      >
+    <div className="mad-feedbar">
+      <div className={showNotices ? "mad-feedbar-row mad-feedbar-row-spaced" : "mad-feedbar-row"}>
         <button
           onClick={() => fileInputRef.current?.click()}
           disabled={parsing}
-          className="mad-btn"
+          className="mad-btn mad-btn-primary"
           title={`CSV or JSON — see README for the ${contract.id} feed contract`}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 6,
-            cursor: parsing ? "wait" : "pointer",
-            background: T.copper,
-            color: T.ink,
-            border: "none",
-            borderRadius: 8,
-            padding: "7px 14px",
-            fontSize: 12.5,
-            fontWeight: 600,
-            opacity: parsing ? 0.7 : 1,
-          }}
         >
           <Upload size={13} /> {parsing ? "Parsing…" : `Upload ${contract.fileLabel}`}
         </button>
         {hasFeed && (
-          <button
-            onClick={handleClear}
-            className="mad-btn"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              cursor: "pointer",
-              background: "transparent",
-              color: T.dim,
-              border: `1px solid ${T.line}`,
-              borderRadius: 8,
-              padding: "7px 14px",
-              fontSize: 12.5,
-              fontWeight: 600,
-            }}
-          >
+          <button onClick={handleClear} className="mad-btn mad-btn-dim">
             <Trash2 size={13} /> Clear data
           </button>
         )}
-        <span style={{ fontSize: 11.5, color: T.dim }}>
+        <span className="mad-feedbar-hint">
           CSV or JSON · validated before anything is applied
         </span>
       </div>
@@ -129,7 +81,7 @@ export function FeedControls({ contract, hasFeed, onFeedLoaded, onClearFeed }) {
         type="file"
         accept={contract.accept}
         onChange={handleFile}
-        style={{ display: "none" }}
+        className="mad-hidden-input"
         aria-hidden="true"
         tabIndex={-1}
       />

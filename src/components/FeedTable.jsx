@@ -3,7 +3,6 @@
 // as $1,240; boolean columns as ✓/—.
 
 import { CheckCircle2 } from "lucide-react";
-import { T } from "../theme";
 
 const MAX_TABLE_ROWS = 200;
 
@@ -28,39 +27,17 @@ function formatCell(value, col) {
 export function FeedTable({ contract, rows }) {
   const shown = rows.slice(0, MAX_TABLE_ROWS);
   return (
-    <div
-      style={{
-        background: T.panel,
-        border: `1px solid ${T.line}`,
-        borderRadius: 12,
-        overflow: "hidden",
-      }}
-    >
-      <div
-        style={{
-          padding: "10px 16px",
-          borderBottom: `1px solid ${T.line}`,
-          fontSize: 11.5,
-          color: T.dim,
-          textTransform: "uppercase",
-          letterSpacing: 0.4,
-          display: "flex",
-          alignItems: "center",
-          gap: 6,
-        }}
-      >
-        <CheckCircle2 size={13} color={T.green} /> Real {contract.recordNoun} —{" "}
+    <div className="mad-panel-card">
+      <div className="mad-panel-head">
+        <CheckCircle2 size={13} className="mad-panel-head-icon" /> Real {contract.recordNoun} —{" "}
         {rows.length} rows
         {rows.length > MAX_TABLE_ROWS && (
-          <span style={{ textTransform: "none", letterSpacing: 0 }}>
+          <span className="mad-panel-head-plain">
             (showing first {MAX_TABLE_ROWS})
           </span>
         )}
       </div>
-      <div
-        className="mad-scroll"
-        style={{ maxHeight: 460, overflowX: "auto", overflowY: "auto" }}
-      >
+      <div className="mad-scroll mad-table-wrap">
         <table className="mad-table">
           <thead>
             <tr>

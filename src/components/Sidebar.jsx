@@ -1,55 +1,21 @@
 import { Circle, LayoutGrid } from "lucide-react";
-import { T, FONTS } from "../theme";
+import { T } from "../theme";
 import { AGENT_DEFS } from "../lib/agents";
 
 export function NavButton({ active, onClick, icon: Icon, label, caption, dotColor, compact }) {
+  const classes = ["mad-nav-btn"];
+  if (active) classes.push("mad-nav-btn-active");
+  if (compact) classes.push("mad-nav-btn-compact");
   return (
     <button
       onClick={onClick}
-      className="mad-nav-btn"
+      className={classes.join(" ")}
       aria-current={active ? "page" : undefined}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 10,
-        padding: compact ? "8px 12px" : "9px 8px",
-        borderRadius: 8,
-        border: `1px solid ${active ? T.copperDim : "transparent"}`,
-        background: active ? T.panel2 : "transparent",
-        cursor: "pointer",
-        textAlign: "left",
-        marginBottom: compact ? 0 : 4,
-        flex: compact ? "0 0 auto" : undefined,
-        width: compact ? undefined : "100%",
-        color: "inherit",
-        font: "inherit",
-      }}
     >
-      <Icon size={16} color={active ? T.copper : T.dim} />
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div
-          style={{
-            fontSize: 13,
-            fontWeight: 500,
-            color: active ? T.paper : T.dim,
-            whiteSpace: "nowrap",
-          }}
-        >
-          {label}
-        </div>
-        {!compact && (
-          <div
-            style={{
-              fontSize: 10.5,
-              color: T.dim,
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            {caption}
-          </div>
-        )}
+      <Icon size={16} />
+      <div className="mad-nav-btn-body">
+        <div className="mad-nav-btn-label">{label}</div>
+        {!compact && <div className="mad-nav-btn-caption">{caption}</div>}
       </div>
       <Circle size={7} fill={dotColor} color={dotColor} />
     </button>
@@ -86,50 +52,17 @@ export function Sidebar({ active, onSelect, agents, narrow }) {
 
   if (narrow) {
     return (
-      <nav
-        aria-label="Dashboard sections"
-        className="mad-scroll"
-        style={{
-          display: "flex",
-          gap: 8,
-          overflowX: "auto",
-          padding: "10px 12px",
-          borderBottom: `1px solid ${T.line}`,
-          background: T.panel,
-          flexShrink: 0,
-        }}
-      >
+      <nav aria-label="Dashboard sections" className="mad-scroll mad-nav-narrow">
         {buttons}
       </nav>
     );
   }
 
   return (
-    <nav
-      aria-label="Dashboard sections"
-      style={{
-        width: 232,
-        minWidth: 232,
-        borderRight: `1px solid ${T.line}`,
-        background: T.panel,
-        padding: "18px 12px",
-        flexShrink: 0,
-      }}
-    >
-      <div style={{ padding: "0 8px 16px 8px" }}>
-        <div
-          style={{
-            fontFamily: FONTS.display,
-            fontWeight: 700,
-            fontSize: 17,
-            letterSpacing: 0.2,
-          }}
-        >
-          Trade Floor
-        </div>
-        <div style={{ fontSize: 11, color: T.dim, marginTop: 2 }}>
-          InfinTrading ops · 4 agents live
-        </div>
+    <nav aria-label="Dashboard sections" className="mad-nav">
+      <div className="mad-nav-brand">
+        <div className="mad-nav-title">Trade Floor</div>
+        <div className="mad-nav-sub">InfinTrading ops · 4 agents live</div>
       </div>
 
       {buttons}

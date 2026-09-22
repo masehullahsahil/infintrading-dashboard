@@ -2,7 +2,6 @@
 // this component only lays out the ticker, sidebar, and the active view.
 
 import { useState } from "react";
-import { T, FONTS } from "./theme";
 import { AGENT_DEFS } from "./lib/agents";
 import { useAgentSimulation } from "./hooks/useAgentSimulation";
 import { useIsNarrow } from "./hooks/useIsNarrow";
@@ -18,36 +17,13 @@ export default function AgentDashboard() {
   const narrow = useIsNarrow();
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: T.ink,
-        color: T.paper,
-        fontFamily: FONTS.sans,
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <div className="mad-app">
       <Ticker items={ticker} />
 
-      <div
-        style={{
-          display: "flex",
-          flex: 1,
-          minHeight: 0,
-          flexDirection: narrow ? "column" : "row",
-        }}
-      >
+      <div className={narrow ? "mad-layout mad-layout-narrow" : "mad-layout"}>
         <Sidebar active={active} onSelect={setActive} agents={agents} narrow={narrow} />
 
-        <main
-          style={{
-            flex: 1,
-            minWidth: 0,
-            padding: narrow ? 16 : 28,
-            overflow: "auto",
-          }}
-        >
+        <main className={narrow ? "mad-main mad-main-narrow" : "mad-main"}>
           {active === "overview" ? (
             <Overview agents={agents} feeds={feeds} onOpen={setActive} />
           ) : (
