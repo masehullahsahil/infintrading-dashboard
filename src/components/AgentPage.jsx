@@ -2,9 +2,17 @@
 // the validated live feed table or the simulated activity log. Every agent
 // shows exactly one feed — live or simulated, never mixed.
 
+import { useMemo, useState } from "react";
 import { T } from "../theme";
 import { agentDataMode, DATA_MODE } from "../lib/dataSource";
 import { FEED_CONTRACTS } from "../lib/agentFeeds";
+import {
+  DEFAULT_VERDICT_FILTER,
+  EVALUATOR_VERDICTS,
+  countVerdicts,
+  normalizeVerdict,
+  prepareEvaluatorRows,
+} from "../lib/evaluatorBoard";
 import { PageHeader } from "./PageHeader";
 import { StatCard } from "./StatCard";
 import { LogList } from "./LogList";
@@ -77,6 +85,32 @@ export function AgentPage({
     def.id === "evaluator" && onTrackDeal
       ? { label: "Track", onClick: onTrackDeal, isActive: isTracked }
       : null;
+  const isEvaluator = def.id === "evaluator";
+  const isLiveTable = dataMode === DATA_MODE.LIVE;
+
+  // Evaluator board: hide SKIP verdicts by default and sort by profit/unit
+  // descending, so a crowded scan still leads with the actionable deals.
+  const [verdictFilter, setVerdictFilter] = useState(DEFAULT_VERDICT_FILTER);
+  const verdictCounts = useMemo(
+    () => (isEvaluator ? countVerdicts(feed) : null),
+    [isEvaluator, feed]
+  );
+  const tableRows = useMemo(() => {
+    if (!isEvaluator || !isLiveTable) return feed;
+    return prepareEvaluatorRows(feed, verdictFilter);
+  }, [isEvaluator, isLiveTable, feed, verdictFilter]);
+
+  const toggleVerdict = (v) => {
+    const norm = normalizeVerdict({ verdict: v });
+    setVerdictFilter((prev) => {
+      if (prev.includes(norm)) {
+        // Never allow deselecting the last chip — the table would go empty.
+        if (prev.length === 1) return prev;
+        return prev.filter((x) => x !== norm);
+      }
+      return [...prev, norm];
+    });
+  };
 
   return (
     <div>
@@ -129,7 +163,48 @@ export function AgentPage({
       </div>
 
       {dataMode === DATA_MODE.LIVE ? (
-        <FeedTable contract={contract} rows={feed} rowAction={rowAction} />
+        <>
+          {isEvaluator && feed && feed.length > 0 && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                flexWrap: "wrap",
+                marginBottom: 12,
+              }}
+            >
+              <span style={{ fontSize: 12, color: T.dim }}>Show:</span>
+              {EVALUATOR_VERDICTS.map((v) => {
+                const active = verdictFilter.includes(v);
+                return (
+                  <button
+                    key={v}
+                    onClick={() => toggleVerdict(v)}
+                    className="mad-btn"
+                    aria-pressed={active}
+                    style={{
+                      cursor: "pointer",
+                      borderRadius: 999,
+                      padding: "4px 12px",
+                      fontSize: 12,
+                      fontWeight: 600,
+                      background: active ? T.copper : "transparent",
+                      color: active ? "#1a120b" : T.dim,
+                      border: `1px solid ${active ? T.copper : T.line}`,
+                    }}
+                  >
+                    {v} · {verdictCounts[v]}
+                  </button>
+                );
+              })}
+              <span style={{ fontSize: 11.5, color: T.dim }}>
+                sorted by profit/unit
+              </span>
+            </div>
+          )}
+          <FeedTable contract={contract} rows={tableRows} rowAction={rowAction} />
+        </>
       ) : (
         <>
           <div className="mad-panel-card">
