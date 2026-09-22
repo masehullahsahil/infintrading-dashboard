@@ -5,7 +5,7 @@ import { agentDataMode, DATA_MODE } from "./dataSource";
 describe("agent definitions", () => {
   it("defines exactly four agents with unique ids", () => {
     const ids = AGENT_DEFS.map((d) => d.id);
-    expect(ids).toEqual(["finder", "evaluator", "buyer", "deals"]);
+    expect(ids).toEqual(["finder", "evaluator", "deals", "buyer"]);
     expect(new Set(ids).size).toBe(ids.length);
   });
 
