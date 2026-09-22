@@ -40,7 +40,7 @@ function renderCell(row, col) {
   return formatCell(value, col);
 }
 
-export function FeedTable({ contract, rows }) {
+export function FeedTable({ contract, rows, rowAction }) {
   const shown = rows.slice(0, MAX_TABLE_ROWS);
   return (
     <div className="mad-panel-card">
@@ -60,6 +60,7 @@ export function FeedTable({ contract, rows }) {
               {contract.tableColumns.map((c) => (
                 <th key={c.key}>{c.label}</th>
               ))}
+              {rowAction && <th aria-label="Row actions" />}
             </tr>
           </thead>
           <tbody>
@@ -68,6 +69,36 @@ export function FeedTable({ contract, rows }) {
                 {contract.tableColumns.map((c) => (
                   <td key={c.key}>{renderCell(r, c)}</td>
                 ))}
+                {rowAction && (
+                  <td>
+                    <button
+                      onClick={() => rowAction.onClick(r)}
+                      disabled={rowAction.isActive && rowAction.isActive(r)}
+                      className="mad-btn"
+                      style={{
+                        cursor:
+                          rowAction.isActive && rowAction.isActive(r)
+                            ? "default"
+                            : "pointer",
+                        background: "transparent",
+                        color:
+                          rowAction.isActive && rowAction.isActive(r)
+                            ? "#4ade80"
+                            : "#C1794A",
+                        border: "1px solid #2C313C",
+                        borderRadius: 6,
+                        padding: "3px 10px",
+                        fontSize: 12,
+                        fontWeight: 600,
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {rowAction.isActive && rowAction.isActive(r)
+                        ? "Tracked ✓"
+                        : rowAction.label}
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

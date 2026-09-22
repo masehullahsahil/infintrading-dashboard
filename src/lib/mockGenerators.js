@@ -50,10 +50,3 @@ export function buyerEvent(seed) {
   ];
   return { text: rand(outcomes), model, offer };
 }
-
-export function bookkeeperEvent(seed) {
-  const model = seed?.model || rand(MODELS);
-  const price = seed?.offer || randInt(150, 500);
-  const roi = randInt(18, 55);
-  return { text: `Purchase logged — ${model} · $${price} · projected ROI ${roi}%`, price, roi };
-}

@@ -9,6 +9,8 @@ import { Ticker } from "./components/Ticker";
 import { Sidebar } from "./components/Sidebar";
 import { Overview } from "./components/Overview";
 import { AgentPage } from "./components/AgentPage";
+import { DealTrackerPage } from "./components/DealTrackerPage";
+import { dealIdFromListing } from "./lib/deals";
 
 export default function AgentDashboard() {
   const [active, setActive] = useState("overview");
@@ -17,14 +19,19 @@ export default function AgentDashboard() {
     ticker,
     feeds,
     feedSources,
+    deals,
     liveMeta,
     liveAvailable,
     toggleAgent,
     applyFeed,
     clearFeed,
     useLiveFeed,
+    trackDeal,
+    updateDeal,
+    removeDeal,
   } = useAgentSimulation();
   const narrow = useIsNarrow();
+  const trackedIds = new Set(deals.map((d) => d.id));
 
   return (
     <div className="mad-app">
@@ -35,7 +42,16 @@ export default function AgentDashboard() {
 
         <main className={narrow ? "mad-main mad-main-narrow" : "mad-main"}>
           {active === "overview" ? (
-            <Overview agents={agents} feeds={feeds} onOpen={setActive} />
+            <Overview agents={agents} feeds={feeds} deals={deals} onOpen={setActive} />
+          ) : active === "deals" ? (
+            <DealTrackerPage
+              def={AGENT_DEFS.find((d) => d.id === "deals")}
+              agent={agents.deals}
+              deals={deals}
+              onUpdateDeal={updateDeal}
+              onRemoveDeal={removeDeal}
+              onToggle={() => toggleAgent("deals")}
+            />
           ) : (
             <AgentPage
               def={AGENT_DEFS.find((d) => d.id === active)}
@@ -48,6 +64,12 @@ export default function AgentDashboard() {
               onToggle={() => toggleAgent(active)}
               onFeedLoaded={applyFeed}
               onClearFeed={clearFeed}
+              onTrackDeal={active === "evaluator" ? trackDeal : undefined}
+              isTracked={
+                active === "evaluator"
+                  ? (row) => trackedIds.has(dealIdFromListing(row))
+                  : undefined
+              }
             />
           )}
         </main>

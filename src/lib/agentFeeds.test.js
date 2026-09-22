@@ -3,7 +3,6 @@ import {
   FEED_CONTRACTS,
   parseFeedText,
   parseFeedFile,
-  STARTING_BUDGET_USD,
 } from "./agentFeeds";
 import { AGENT_DEFS } from "./agents";
 
@@ -20,16 +19,12 @@ M3,500,450,offer_sent,S3,2026-01-03
 M4,250,230,no_response,S4,2026-01-04
 `;
 
-const VALID_LEDGER = `model,purchase_price,purchase_date,resale_price,fees,seller
-A,100,2026-01-01,150,10,S1
-B,200,2026-01-02,,,S2
-`;
-
 describe("feed contract registry", () => {
-  it("covers exactly the four agents", () => {
-    expect(Object.keys(FEED_CONTRACTS).sort()).toEqual(
-      AGENT_DEFS.map((d) => d.id).sort()
-    );
+  it("covers exactly the feed-backed agents (the Deal Tracker is user state, not a feed)", () => {
+    const feedAgents = AGENT_DEFS.filter((d) => d.id !== "deals")
+      .map((d) => d.id)
+      .sort();
+    expect(Object.keys(FEED_CONTRACTS).sort()).toEqual(feedAgents);
   });
 
   it("gives every contract a parser, summarizer, and table columns", () => {
@@ -133,42 +128,6 @@ describe("buyer feed", () => {
       "open.csv"
     );
     expect(stats).toEqual([1, 1, "—"]);
-  });
-});
-
-describe("bookkeeper feed", () => {
-  const c = FEED_CONTRACTS.bookkeeper;
-
-  it("computes units, budget remaining, and blended ROI on sold items", () => {
-    const { rows, stats, error } = c.parseText(VALID_LEDGER, "ledger.csv");
-    expect(error).toBeNull();
-    expect(rows).toHaveLength(2);
-    // spent 300 of the starting budget; sold A: profit 150-100-10=40 on cost 100
-    expect(stats).toEqual([2, "$9,700", "40%"]);
-    expect(STARTING_BUDGET_USD).toBe(10000);
-  });
-
-  it("tolerates $ and comma formatted prices", () => {
-    const { rows, error } = c.parseText(
-      'model,purchase_price\nA,"$1,240"\n',
-      "money.csv"
-    );
-    expect(error).toBeNull();
-    expect(rows[0].purchase_price).toBe(1240);
-  });
-
-  it("rejects a missing purchase_price column", () => {
-    const { error } = c.parseText("model\nA\n", "bad.csv");
-    expect(error).toContain("Missing required column(s)");
-    expect(error).toContain("purchase_price");
-  });
-
-  it("shows a dash ROI when nothing is sold yet", () => {
-    const { stats } = c.parseText(
-      "model,purchase_price\nA,100\n",
-      "unsold.csv"
-    );
-    expect(stats).toEqual([1, "$9,900", "—"]);
   });
 });
 

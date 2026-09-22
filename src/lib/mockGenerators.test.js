@@ -3,7 +3,6 @@ import {
   finderEvent,
   evaluatorMockEvent,
   buyerEvent,
-  bookkeeperEvent,
   MODELS,
 } from "./mockGenerators";
 
@@ -44,15 +43,5 @@ describe("mock event generators", () => {
     const ev = buyerEvent(undefined);
     expect(typeof ev.text).toBe("string");
     expect(ev.text.length).toBeGreaterThan(0);
-  });
-
-  it("bookkeeperEvent reports ROI in a sane range", () => {
-    for (let i = 0; i < 50; i++) {
-      const ev = bookkeeperEvent({ model: "XPS 13", offer: 300 });
-      expect(ev.price).toBe(300);
-      const roi = Number(ev.text.match(/(\d+)%/)[1]);
-      expect(roi).toBeGreaterThanOrEqual(18);
-      expect(roi).toBeLessThanOrEqual(55);
-    }
   });
 });

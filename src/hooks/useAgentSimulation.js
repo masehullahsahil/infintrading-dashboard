@@ -3,6 +3,10 @@ import { AGENT_DEFS, SEED_SOURCE, seedAgent, seedMetrics } from "../lib/agents";
 import { rand } from "../lib/mockGenerators";
 import { FEED_CONTRACTS } from "../lib/agentFeeds";
 import { fetchLiveFeed, liveIsNewer } from "../lib/liveFeed";
+import {
+  createDealFromListing,
+  dealIdFromListing,
+} from "../lib/deals";
 
 const STORAGE_KEY = "mad:v2";
 const LEGACY_STORAGE_KEY = "mad:v1";
@@ -16,14 +20,14 @@ const EMPTY_SOURCES = {
   finder: null,
   evaluator: null,
   buyer: null,
-  bookkeeper: null,
+  deals: null,
 };
 
 const EMPTY_FEEDS = {
   finder: null,
   evaluator: null,
   buyer: null,
-  bookkeeper: null,
+  deals: null,
 };
 
 function loadStored(key) {
@@ -79,6 +83,14 @@ function loadStatuses() {
   );
 }
 
+// Tracked deals are user state (not a feed): rehydrate the array, dropping
+// anything that doesn't look like a deal.
+function loadDeals() {
+  const raw = loadStored(STORAGE_KEY)?.deals;
+  if (!Array.isArray(raw)) return [];
+  return raw.filter((d) => d && typeof d.id === "string" && typeof d.lot === "string");
+}
+
 function initialState() {
   const feeds = loadFeeds();
   const feedSources = loadSources();
@@ -115,6 +127,7 @@ export function useAgentSimulation() {
   const [agents, setAgents] = useState(boot.agents);
   const [feeds, setFeeds] = useState(boot.feeds);
   const [feedSources, setFeedSources] = useState(boot.feedSources);
+  const [deals, setDeals] = useState(loadDeals);
   const [liveMeta, setLiveMeta] = useState(null);
   const [liveAvailable, setLiveAvailable] = useState(false);
   const [ticker, setTicker] = useState(["System online — 4 agents initialized"]);
@@ -125,10 +138,12 @@ export function useAgentSimulation() {
 
   // Demo feed: one random running agent emits an event every tick.
   // An agent stops emitting mock events once its real feed is loaded, so
-  // simulated rows never mix into a live dataset.
+  // simulated rows never mix into a live dataset. Agents without a demo
+  // generator (user-state agents like the Deal Tracker) never emit.
   const tick = useCallback(() => {
     setAgents((prev) => {
       const eligible = AGENT_DEFS.filter((d) => {
+        if (!d.gen) return false;
         if (prev[d.id].status !== "running") return false;
         const live = feeds[d.id] && feeds[d.id].length > 0;
         if (live) return false;
@@ -161,7 +176,6 @@ export function useAgentSimulation() {
         if (Math.random() > 0.6) m[1] += 1;
       }
       if (def.id === "buyer" && ev.text.startsWith("Offer sent")) m[0] += 1;
-      if (def.id === "bookkeeper" && ev.text.startsWith("Purchase")) m[0] += 1;
       agent.metrics = m;
       next[def.id] = agent;
       return next;
@@ -188,7 +202,8 @@ export function useAgentSimulation() {
     }
   }, [agents]);
 
-  // Persist pause state + real feeds + feed provenance; rehydrated on next load.
+  // Persist pause state + real feeds + feed provenance + tracked deals;
+  // rehydrated on next load.
   useEffect(() => {
     const statuses = {};
     const storedFeeds = {};
@@ -196,7 +211,7 @@ export function useAgentSimulation() {
       statuses[d.id] = agents[d.id].status;
       storedFeeds[d.id] = feeds[d.id] ? feeds[d.id].slice(0, MAX_STORED_ROWS) : null;
     });
-    const payload = JSON.stringify({ statuses, feeds: storedFeeds, feedSources });
+    const payload = JSON.stringify({ statuses, feeds: storedFeeds, feedSources, deals });
     if (payload === lastSavedRef.current) return;
     lastSavedRef.current = payload;
     try {
@@ -205,6 +220,35 @@ export function useAgentSimulation() {
       // Storage full or unavailable — dashboard works fine without it.
     }
   });
+
+  // Deal Tracker metrics are derived from the deals list where they're
+  // displayed (Overview, DealTrackerPage) — no sync effect needed.
+
+  // Flag an Evaluator lot as a tracked deal. Re-tracking the same lot is a
+  // no-op (stable id), so the Track button can't create duplicates.
+  const trackDeal = useCallback((listingRow) => {
+    const id = dealIdFromListing(listingRow);
+    let added = false;
+    setDeals((prev) => {
+      if (prev.some((d) => d.id === id)) return prev;
+      added = true;
+      return [...prev, createDealFromListing(listingRow)];
+    });
+    // Note: `added` is only accurate on the first call per render; the
+    // ticker line is best-effort and harmless if duplicated.
+    setTicker((prev) =>
+      [...prev, `DEAL TRACKER · Now tracking ${listingRow.raw_model || "lot"}`].slice(-10)
+    );
+    return added;
+  }, []);
+
+  const updateDeal = useCallback((id, patch) => {
+    setDeals((prev) => prev.map((d) => (d.id === id ? { ...d, ...patch } : d)));
+  }, []);
+
+  const removeDeal = useCallback((id) => {
+    setDeals((prev) => prev.filter((d) => d.id !== id));
+  }, []);
 
   const toggleAgent = useCallback((id) => {
     setAgents((prev) => ({
@@ -302,11 +346,15 @@ export function useAgentSimulation() {
     ticker,
     feeds,
     feedSources,
+    deals,
     liveMeta,
     liveAvailable,
     toggleAgent,
     applyFeed,
     clearFeed,
     useLiveFeed,
+    trackDeal,
+    updateDeal,
+    removeDeal,
   };
 }

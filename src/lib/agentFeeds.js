@@ -228,26 +228,6 @@ function summarizeOffers(rows) {
   return [rows.length, active, rate];
 }
 
-/** Starting cash the Bookkeeper measures spend against (documented in README). */
-export const STARTING_BUDGET_USD = 10000;
-
-function formatMoney(usd) {
-  const sign = usd < 0 ? "-" : "";
-  return `${sign}$${Math.abs(Math.round(usd)).toLocaleString("en-US")}`;
-}
-
-function summarizeLedger(rows) {
-  const spent = rows.reduce((sum, r) => sum + r.purchase_price, 0);
-  const sold = rows.filter((r) => r.resale_price !== null);
-  const soldCost = sold.reduce((sum, r) => sum + r.purchase_price, 0);
-  const profit = sold.reduce(
-    (sum, r) => sum + r.resale_price - r.purchase_price - (r.fees || 0),
-    0
-  );
-  const roi = soldCost > 0 ? `${Math.round((profit / soldCost) * 100)}%` : "—";
-  return [rows.length, formatMoney(STARTING_BUDGET_USD - spent), roi];
-}
-
 function summarizeEvaluator(rows) {
   const s = summarizeListings(rows);
   return [s.count, s.matched, s.avgMargin];
@@ -348,34 +328,6 @@ export const FEED_CONTRACTS = {
     summarize: summarizeOffers,
     parseText: (text, fileName) =>
       parseFeedText(text, fileName, FEED_CONTRACTS.buyer),
-  },
-  bookkeeper: {
-    id: "bookkeeper",
-    fileLabel: "ledger.csv",
-    accept: ".csv,.json,text/csv,application/json",
-    recordNoun: "ledger entries",
-    expectedColumns: [
-      "model",
-      "purchase_price",
-      "purchase_date",
-      "resale_price",
-      "fees",
-      "seller",
-    ],
-    requiredColumns: ["model", "purchase_price"],
-    numericColumns: ["purchase_price", "resale_price", "fees"],
-    enumColumns: {},
-    tableColumns: [
-      { key: "model", label: "Model" },
-      { key: "purchase_price", label: "Paid", money: true },
-      { key: "purchase_date", label: "Purchased" },
-      { key: "resale_price", label: "Resold", money: true },
-      { key: "fees", label: "Fees", money: true },
-      { key: "seller", label: "Seller" },
-    ],
-    summarize: summarizeLedger,
-    parseText: (text, fileName) =>
-      parseFeedText(text, fileName, FEED_CONTRACTS.bookkeeper),
   },
 };
 
