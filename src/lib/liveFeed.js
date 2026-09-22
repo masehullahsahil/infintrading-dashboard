@@ -12,6 +12,8 @@ export const LIVE_FEED_BASE =
 
 export const LIVE_FEED_LISTINGS_URL = `${LIVE_FEED_BASE}/listings.json`;
 export const LIVE_FEED_META_URL = `${LIVE_FEED_BASE}/meta.json`;
+export const LIVE_FEED_SUPPLIERS_URL = `${LIVE_FEED_BASE}/suppliers.json`;
+export const LIVE_FEED_CANDIDATES_URL = `${LIVE_FEED_BASE}/candidates.json`;
 
 /**
  * Fetch and validate the live feed.
@@ -52,4 +54,49 @@ export function liveIsNewer(liveMeta, currentSource) {
   if (!currentSource || currentSource.source !== "live") return true;
   if (!currentSource.at) return true;
   return new Date(liveMeta.scan_at) > new Date(currentSource.at);
+}
+
+/**
+ * Fetch the Finder's live supplier roster (suppliers.json), validated against
+ * the finder feed contract. Null when unreachable or invalid. Never throws.
+ */
+export async function fetchLiveSuppliers(fetchImpl = fetch) {
+  let res;
+  try {
+    res = await fetchImpl(LIVE_FEED_SUPPLIERS_URL, { cache: "no-store" });
+  } catch {
+    return null;
+  }
+  if (!res || !res.ok) return null;
+  let text;
+  try {
+    text = await res.text();
+  } catch {
+    return null;
+  }
+  const contract = FEED_CONTRACTS.finder;
+  const parsed = contract.parseText(text, "suppliers.json");
+  if (parsed.error || !parsed.rows || parsed.rows.length === 0) return null;
+  return { rows: parsed.rows };
+}
+
+/**
+ * Fetch proposed supplier candidates (candidates.json) for the Finder's
+ * review panel. Returns the array (possibly empty); null only when the feed
+ * is unreachable or unparsable. Never throws.
+ */
+export async function fetchLiveCandidates(fetchImpl = fetch) {
+  let res;
+  try {
+    res = await fetchImpl(LIVE_FEED_CANDIDATES_URL, { cache: "no-store" });
+  } catch {
+    return null;
+  }
+  if (!res || !res.ok) return null;
+  try {
+    const data = await res.json();
+    return Array.isArray(data) ? data : null;
+  } catch {
+    return null;
+  }
 }
