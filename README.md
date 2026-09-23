@@ -159,8 +159,30 @@ public/
 ## Deployment
 
 `npm run build` produces a static `dist/` folder — deploy it to any static
-host (Vercel, Netlify, GitHub Pages, S3, …). No server or environment variables
-required.
+host (Vercel, Netlify, GitHub Pages, S3, …). No server required.
+
+## Dashboard password
+
+The dashboard shows a password screen before anything else renders. The
+password itself is never stored in the repo — at build time Vite embeds the
+hex SHA-256 of the password from `VITE_DASHBOARD_PASSWORD_SHA256`, and the
+typed password is hashed in the browser and compared. Unlock lasts for the
+tab session; closing the tab (or the Lock button in the sidebar) re-locks it.
+If the variable is missing, the dashboard fails closed with a setup message.
+
+Generate the hash for a new password:
+
+```sh
+node -e "const c=require('crypto');c.webcrypto.subtle.digest('SHA-256',Buffer.from(process.argv[1],'utf8')).then(b=>console.log(Buffer.from(b).toString('hex')))" "your-password-here"
+```
+
+Then set `VITE_DASHBOARD_PASSWORD_SHA256` to the printed hash:
+
+- **Vercel:** Project → Settings → Environment Variables → add it for
+  Production (and Preview if you want previews locked too) → redeploy.
+- **Local dev:** put it in `.env.local` (gitignored, never committed).
+
+Change the password by setting a new hash and redeploying.
 
 ## License
 

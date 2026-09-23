@@ -10,10 +10,28 @@ import { Sidebar } from "./components/Sidebar";
 import { Overview } from "./components/Overview";
 import { AgentPage } from "./components/AgentPage";
 import { DealTrackerPage } from "./components/DealTrackerPage";
+import { LockScreen } from "./components/LockScreen";
+import { isGateConfigured, isUnlocked, setUnlocked, lock } from "./lib/dashboardAuth";
 import { dealIdFromListing } from "./lib/deals";
 
 export default function AgentDashboard() {
   const [active, setActive] = useState("overview");
+  // Access gate: the dashboard stays locked until the password is entered.
+  // Unlock lasts for the tab session; closing the tab re-locks.
+  const [unlocked, setUnlockedState] = useState(() => isUnlocked());
+  const gateConfigured = isGateConfigured();
+
+  function handleUnlock() {
+    setUnlocked();
+    setUnlockedState(true);
+  }
+
+  function handleLock() {
+    lock();
+    setUnlockedState(false);
+  }
+
+  // Hooks stay above the gate's early return so call order never changes.
   const {
     agents,
     ticker,
@@ -39,12 +57,16 @@ export default function AgentDashboard() {
   const narrow = useIsNarrow();
   const trackedIds = new Set(deals.map((d) => d.id));
 
+  if (!gateConfigured || !unlocked) {
+    return <LockScreen configured={gateConfigured} onUnlock={handleUnlock} />;
+  }
+
   return (
     <div className="mad-app">
       <Ticker items={ticker} />
 
       <div className={narrow ? "mad-layout mad-layout-narrow" : "mad-layout"}>
-        <Sidebar active={active} onSelect={setActive} agents={agents} narrow={narrow} />
+        <Sidebar active={active} onSelect={setActive} agents={agents} narrow={narrow} onLock={handleLock} />
 
         <main className={narrow ? "mad-main mad-main-narrow" : "mad-main"}>
           {active === "overview" ? (
