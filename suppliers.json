@@ -310,5 +310,93 @@
   "contact": "https://hobi.com",
   "found_date": "2026-09-21",
   "status": "under_review"
+ },
+ {
+  "supplier_name": "GW Tech Parts",
+  "supplier_type": "wholesaler",
+  "source_channel": "listed prices + downloadable inventory xlsx",
+  "contact": "https://gwtechparts.com/collections/all",
+  "found_date": "2026-09-22",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Liquidation.com (Liquidity Services)",
+  "supplier_type": "marketplace/auction house",
+  "source_channel": "public auction",
+  "contact": "https://www.liquidation.com/auction/search?query=TQ3xL222Tyj49f2ckN2xKN1ceU2.kH2ckNz.eNwbeNDyeHwikf2V",
+  "found_date": "2026-09-22",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Moecker Auctions",
+  "supplier_type": "auction house",
+  "source_channel": "public online auction",
+  "contact": "https://moeckerauctions.com/2026/09/22/ecom-authority-llc-24/",
+  "found_date": "2026-09-22",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Dell Refurbished (Dell Financial Services)",
+  "supplier_type": "manufacturer off-lease wholesaler",
+  "source_channel": "listed prices / wholesale program (min 100 units; licensed US businesses only)",
+  "contact": "https://www.dellrefurbished.com/off-lease-laptops-wholesale",
+  "found_date": "2026-09-22",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Cal Auctions",
+  "supplier_type": "auction house (university surplus)",
+  "source_channel": "public online auction",
+  "contact": "https://calauctions.com/auctions/1YuxYUmU5lDuYk8tyXiE/a/Palomar-College-Surplus---Escondido-Campus---Escondido--CA-92027",
+  "found_date": "2026-09-22",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Merkandi",
+  "supplier_type": "B2B marketplace",
+  "source_channel": "listed prices (negotiable)",
+  "contact": "https://merkandi.us/wholesale/laptop-pallets",
+  "found_date": "2026-09-22",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Knowledge Computers Asset Remarketing / Global E-waste",
+  "supplier_type": "ITAD / auction seller",
+  "source_channel": "public auction (K-BID)",
+  "contact": "https://www.k-bid.com/auction/61433",
+  "found_date": "2026-09-22",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "K-BID Online, Inc.",
+  "supplier_type": "marketplace/auction platform",
+  "source_channel": "public online auctions via independent affiliates",
+  "contact": "https://www.k-bid.com",
+  "found_date": "2026-09-22",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "MinnBid - State of Minnesota Surplus Services",
+  "supplier_type": "government surplus auction",
+  "source_channel": "public online auction",
+  "contact": "https://www.minnbid.org/",
+  "found_date": "2026-09-22",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "Michigan MiBid - DTMB State Surplus",
+  "supplier_type": "government surplus auction",
+  "source_channel": "public online auction (MiBid) + monthly in-person sales",
+  "contact": "https://www.michigan.gov/dtmb/services/surplusprogram",
+  "found_date": "2026-09-22",
+  "status": "under_review"
+ },
+ {
+  "supplier_name": "OTHardware (Ocean Enterprises LLC)",
+  "supplier_type": "auction seller (electronics)",
+  "source_channel": "public auction (K-BID)",
+  "contact": "https://www.k-bid.com/auction/45889",
+  "found_date": "2026-09-22",
+  "status": "under_review"
  }
 ]
