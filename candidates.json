@@ -1,1 +1,38 @@
-[]
+[
+ {
+  "date_found": "2026-09-23",
+  "company": "Purple Wave Auction",
+  "url": "https://www.purplewave.com/inventory/business-and-personal-property/other-industrial-and-personal-property/computers/for-sale",
+  "type": "auction house",
+  "location": "Manhattan KS, US",
+  "how_lots_sold": "public online no-reserve auctions",
+  "bulk_evidence": "Sold lots: 52x Dell Latitude E5550 $2,255 (Apr 2023, Newton KS school district); 84x Lenovo laptops $2,640 (May 2024, Garden City KS); 20x assorted laptops $1,925 (Wichita State Univ); active Computers page shows 88x Lenovo, 52x Dell Latitude 5414, 50x Dell OptiPlex 7070 lots; background: founded 2000, HQ 825 Levee Dr Manhattan KS, 200-500 employees, Copart invested 2023, dedicated Computers category with government-surplus flow",
+  "why_promising": "Midwest government-surplus auctioneer with recurring bulk laptop lots at no-reserve auctions - sellers are schools/agencies, same model as the IL iBid lots that already scored BUY",
+  "open_question": "buyer premium + freight from Kansas pickup locations",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-23",
+  "company": "Tradeloop",
+  "url": "https://www.tradeloop.com/",
+  "type": "B2B marketplace",
+  "location": "Arlington MA, US",
+  "how_lots_sold": "member listings (public marketplace + members-only private network)",
+  "bulk_evidence": "Marketplace where ITADs/wholesalers trade bulk refurbished/off-lease laptop lots and parts; background: 29 yrs (domain 1996, corp since 1996), BBB business profile, 1337 Massachusetts Ave Ste 222 Arlington MA, (781) 505-1400, no scam-list hits; bulk-lot volume sits behind members-only listings, not publicly auditable",
+  "why_promising": "One watch point covering dozens of ITAD sellers at once - exactly the lot flow Evaluator needs; long-running industry marketplace, not a fly-by-night broker",
+  "open_question": "membership fee + how much bulk-lot inventory is visible free vs paywalled",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-23",
+  "company": "Wisetek Market",
+  "url": "https://www.wisetekmarket.com/collections/bulk-buyer",
+  "type": "ITAD wholesale / reseller program",
+  "location": "US (Austin TX / Sacramento CA / Northborough MA) + IE HQ; UAE facility",
+  "how_lots_sold": "listed prices + quote-based bulk-buyer program",
+  "bulk_evidence": "Bulk-buyer program for resellers (refurbished laptops/desktops, tested/wiped per ISO process); background: founded 2007 Cork IE, global ITAD 450+ employees, US ops since 2017 (Austin TX, Sacramento CA, Winchester VA, Northborough MA), acquired by Iron Mountain Sept 2024, Gartner-listed ITAD; also has UAE facility matching our shipping lane; refurb price levels vs liquidation comps unknown",
+  "why_promising": "Credible global ITAD with real US warehouses and even a UAE facility - refurbished bulk program could be a steady tested-unit source; Iron Mountain ownership adds balance-sheet legitimacy",
+  "open_question": "bulk pricing levels vs auction comps; minimum order quantities",
+  "status": "proposed"
+ }
+]
