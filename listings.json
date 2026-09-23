@@ -46,7 +46,7 @@
   "raw_model": "Bulk Lot of 457 Microsoft Surface Laptop Go - i5 (Lot# 29562-13)",
   "source": "GovDeals",
   "qty": "457",
-  "condition": "reserve not met",
+  "condition": "reserve not met (closed)",
   "cpu_family": "",
   "gen": "",
   "asking_price": "34500.0",
@@ -58,7 +58,7 @@
   "landed_per_unit": "94.04",
   "profit_per_unit": "16.24",
   "max_bid_usd": "32935.99",
-  "closes_at": "2026-09-23 01:21 CDT (closes tonight)",
+  "closes_at": "2026-09-23 01:21 CDT (closed this morning)",
   "lot_url": "https://govdeals.bid/4y6xcty",
   "eval_notes": "resale~$123/u (microsoft median, UAE ~Jul 2026); dead 10% guess; premium 10% guess; freight $11/u"
  },
