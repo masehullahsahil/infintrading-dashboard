@@ -310,53 +310,5 @@
   "contact": "https://hobi.com",
   "found_date": "2026-09-21",
   "status": "under_review"
- },
- {
-  "supplier_name": "GW Tech Parts",
-  "supplier_type": "Direct ITAD / Auction",
-  "source_channel": "Listed prices - wholesale portal",
-  "contact": "https://gwtechparts.com/collections/all",
-  "found_date": "2026-09-22",
-  "status": "under_review"
- },
- {
-  "supplier_name": "Liquidation.com (Liquidity Services)",
-  "supplier_type": "Auction Marketplace",
-  "source_channel": "Platform - public auction",
-  "contact": "https://www.liquidation.com/",
-  "found_date": "2026-09-22",
-  "status": "under_review"
- },
- {
-  "supplier_name": "Moecker Auctions",
-  "supplier_type": "Auction Marketplace",
-  "source_channel": "Platform - public auction",
-  "contact": "https://moeckerauctions.com/",
-  "found_date": "2026-09-22",
-  "status": "under_review"
- },
- {
-  "supplier_name": "Dell Refurbished (Dell Financial Services)",
-  "supplier_type": "Direct ITAD / Auction",
-  "source_channel": "Direct - manufacturer wholesale",
-  "contact": "https://www.dellrefurbished.com/off-lease-laptops-wholesale",
-  "found_date": "2026-09-22",
-  "status": "under_review"
- },
- {
-  "supplier_name": "Cal Auctions",
-  "supplier_type": "Auction Marketplace",
-  "source_channel": "Platform - public auction",
-  "contact": "https://calauctions.com/",
-  "found_date": "2026-09-22",
-  "status": "under_review"
- },
- {
-  "supplier_name": "Merkandi",
-  "supplier_type": "B2B marketplace",
-  "source_channel": "Wholesale portal",
-  "contact": "https://merkandi.us/wholesale/laptop-pallets",
-  "found_date": "2026-09-22",
-  "status": "under_review"
  }
 ]
