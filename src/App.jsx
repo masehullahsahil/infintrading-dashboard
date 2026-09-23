@@ -17,7 +17,7 @@ import { dealIdFromListing } from "./lib/deals";
 export default function AgentDashboard() {
   const [active, setActive] = useState("overview");
   // Access gate: the dashboard stays locked until the password is entered.
-  // Unlock lasts for the tab session; closing the tab re-locks.
+  // Unlock persists in this browser until the Lock button is used.
   const [unlocked, setUnlockedState] = useState(() => isUnlocked());
   const gateConfigured = isGateConfigured();
 

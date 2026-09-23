@@ -1,7 +1,10 @@
 // Dashboard access gate. The password itself is never stored in the repo:
 // at build time, Vercel embeds VITE_DASHBOARD_PASSWORD_SHA256 (the hex
 // SHA-256 of the chosen password) into the bundle, and the typed password
-// is hashed in the browser and compared. Unlock lasts for the tab session.
+// is hashed in the browser and compared. Unlock persists in this browser
+// (localStorage) until the Lock button is used — so a trusted laptop only
+// asks for the password once. This is a lightweight client-side gate, not
+// strong access control: anyone opening this browser gets in while unlocked.
 
 const SESSION_KEY = "infintrading-dashboard-unlocked";
 const ENV_KEY = "VITE_DASHBOARD_PASSWORD_SHA256";
@@ -45,7 +48,7 @@ export async function verifyPassword(password) {
 
 export function isUnlocked() {
   try {
-    return sessionStorage.getItem(SESSION_KEY) === "1";
+    return localStorage.getItem(SESSION_KEY) === "1";
   } catch {
     return false;
   }
@@ -53,7 +56,7 @@ export function isUnlocked() {
 
 export function setUnlocked() {
   try {
-    sessionStorage.setItem(SESSION_KEY, "1");
+    localStorage.setItem(SESSION_KEY, "1");
   } catch {
     // private mode etc. — the gate just re-locks next load
   }
@@ -61,7 +64,7 @@ export function setUnlocked() {
 
 export function lock() {
   try {
-    sessionStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(SESSION_KEY);
   } catch {
     // ignore
   }
