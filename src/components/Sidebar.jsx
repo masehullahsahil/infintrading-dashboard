@@ -1,4 +1,4 @@
-import { Circle, LayoutGrid } from "lucide-react";
+import { Circle, LayoutGrid, Lock } from "lucide-react";
 import { T } from "../theme";
 import { AGENT_DEFS } from "../lib/agents";
 
@@ -23,7 +23,7 @@ export function NavButton({ active, onClick, icon: Icon, label, caption, dotColo
 }
 
 /** Left nav on desktop, horizontal scroll nav on narrow screens. */
-export function Sidebar({ active, onSelect, agents, narrow }) {
+export function Sidebar({ active, onSelect, agents, narrow, onLock }) {
   const buttons = (
     <>
       <NavButton
@@ -54,6 +54,16 @@ export function Sidebar({ active, onSelect, agents, narrow }) {
     return (
       <nav aria-label="Dashboard sections" className="mad-scroll mad-nav-narrow">
         {buttons}
+        {onLock && (
+          <button
+            onClick={onLock}
+            className="mad-nav-btn mad-nav-btn-compact"
+            title="Lock the dashboard"
+            aria-label="Lock the dashboard"
+          >
+            <Lock size={16} />
+          </button>
+        )}
       </nav>
     );
   }
@@ -66,6 +76,21 @@ export function Sidebar({ active, onSelect, agents, narrow }) {
       </div>
 
       {buttons}
+
+      {onLock && (
+        <button
+          onClick={onLock}
+          className="mad-nav-btn"
+          title="Lock the dashboard"
+          style={{ marginTop: 12 }}
+        >
+          <Lock size={16} />
+          <div className="mad-nav-btn-body">
+            <div className="mad-nav-btn-label">Lock</div>
+            <div className="mad-nav-btn-caption">Require password</div>
+          </div>
+        </button>
+      )}
     </nav>
   );
 }
