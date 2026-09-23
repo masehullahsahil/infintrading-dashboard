@@ -60,10 +60,12 @@ describe("verifyPassword", () => {
   });
 });
 
-describe("session lock state", () => {
+describe("persistent lock state", () => {
+  let store;
+
   beforeEach(() => {
-    const store = new Map();
-    vi.stubGlobal("sessionStorage", {
+    store = new Map();
+    vi.stubGlobal("localStorage", {
       getItem: (k) => (store.has(k) ? store.get(k) : null),
       setItem: (k, v) => store.set(k, String(v)),
       removeItem: (k) => store.delete(k),
@@ -81,5 +83,18 @@ describe("session lock state", () => {
     expect(isUnlocked()).toBe(true);
     lock();
     expect(isUnlocked()).toBe(false);
+  });
+
+  it("stays unlocked in a fresh tab reading the same browser profile", () => {
+    setUnlocked();
+    // simulate a new tab: a fresh localStorage wrapper over the same
+    // underlying browser store — with sessionStorage this would be empty
+    vi.stubGlobal("localStorage", {
+      getItem: (k) => (store.has(k) ? store.get(k) : null),
+      setItem: (k, v) => store.set(k, String(v)),
+      removeItem: (k) => store.delete(k),
+      clear: () => store.clear(),
+    });
+    expect(isUnlocked()).toBe(true);
   });
 });
