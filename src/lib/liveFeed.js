@@ -95,7 +95,13 @@ export async function fetchLiveCandidates(fetchImpl = fetch) {
   if (!res || !res.ok) return null;
   try {
     const data = await res.json();
-    return Array.isArray(data) ? data : null;
+    if (!Array.isArray(data)) return null;
+    // Drop malformed elements (e.g. null): downstream candidateKey(c)
+    // dereferences c.url, which would throw during rendering and take the
+    // dashboard to its error boundary.
+    return data.filter(
+      (c) => c && typeof c === "object" && (c.url || c.company)
+    );
   } catch {
     return null;
   }
