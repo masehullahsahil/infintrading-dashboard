@@ -70,5 +70,65 @@
   "why_promising": "Per-unit prices well below US auction comps; EU corporate lots could be transshipment or arbitrage source; free-to-browse price data",
   "open_question": "actual ship-from country + freight/import cost to UAE",
   "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-22",
+  "company": "Knowledge Computers Asset Remarketing / Global E-waste",
+  "url": "https://www.k-bid.com/auction/61433",
+  "type": "ITAD / auction seller",
+  "location": "Plymouth, MN, US",
+  "how_lots_sold": "public auction (K-BID)",
+  "bulk_evidence": "Calls itself Minnesota's largest center of used electronics; recurring K-BID tech auctions found (auction IDs 32350, 61433, 53674); Apple/HP/Dell laptops, all units tested with 30-day warranty; 15% buyer premium; pickup 5205 Hwy 169 N Ste 200, Plymouth MN",
+  "why_promising": "Local MN seller with tested units + warranty (rare for surplus); recurring laptop auctions; pickup ~20 min from owner",
+  "open_question": "Bulk pallet lots vs single-unit lots \u2014 confirm bulk frequency",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-22",
+  "company": "K-BID Online, Inc.",
+  "url": "https://www.k-bid.com",
+  "type": "marketplace/auction platform",
+  "location": "Medina, MN, US",
+  "how_lots_sold": "public online auctions via independent affiliates",
+  "bulk_evidence": "MN-based auction venue hosting Knowledge Computers + OTHardware electronics auctions; ~4,700 auctions/yr in 2024-2025 (estatesale.com company page); address 1400 County Rd 29 Ste 1030, Medina MN 55359",
+  "why_promising": "One watch point covering multiple MN electronics sellers; recurring tech auctions from local affiliates",
+  "open_question": "Laptop auctions are affiliate-driven \u2014 need to track the right sellers",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-22",
+  "company": "MinnBid - State of Minnesota Surplus Services",
+  "url": "https://www.minnbid.org/",
+  "type": "government surplus auction",
+  "location": "St. Paul, MN, US",
+  "how_lots_sold": "public online auction",
+  "bulk_evidence": "Official MN state surplus auction platform (State of Minnesota, MNIT-hosted); used by state agencies, DNR fleet auctions, police depts, cities (documented in Waite Park city memo, DNR news releases, county sheriff pages); direct page load failed on this check \u2014 verify live before bidding",
+  "why_promising": "Official state channel \u2014 school/government computer lots surface here; same model as IL iBid which already produced 2 BUY lots",
+  "open_question": "Computer lot frequency; pickup locations vary by agency",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-22",
+  "company": "Michigan MiBid - DTMB State Surplus",
+  "url": "https://www.michigan.gov/dtmb/services/surplusprogram",
+  "type": "government surplus auction",
+  "location": "Lansing, MI, US",
+  "how_lots_sold": "public online auction (MiBid) + monthly in-person sales",
+  "bulk_evidence": "MI Dept of Technology, Management & Budget surplus program; sells electronic equipment from state agencies, public colleges, MSP/DNR confiscated property; monthly in-person sales at 3111 W. St. Joseph St., Lansing; free MiLogin account required to bid",
+  "why_promising": "IL iBid already proved the state-surplus model (2 BUY lots) \u2014 Michigan's equivalent is currently unwatched",
+  "open_question": "Computer lot frequency; in-person sales are pickup-only",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-22",
+  "company": "OTHardware (Ocean Enterprises LLC)",
+  "url": "https://www.k-bid.com/auction/45889",
+  "type": "auction seller (electronics)",
+  "location": "Eden Prairie, MN, US",
+  "how_lots_sold": "public auction (K-BID)",
+  "bulk_evidence": "History thin \u2014 one K-BID electronics auction page found (auction/45889); sells mostly-tested electronics as-is; contact kbid@oceantech.com / 952-466-1769; pickup 9940 Hamilton Rd, Eden Prairie MN; worth watching as second MN tech-auction seller alongside Knowledge Computers",
+  "why_promising": "Another local MN electronics auctioneer on K-BID; most items tested",
+  "open_question": "Bulk laptop lot frequency unknown; shipping terms per auction",
+  "status": "proposed"
  }
 ]
