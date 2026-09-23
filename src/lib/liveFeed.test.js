@@ -158,4 +158,16 @@ describe("fetchLiveCandidates", () => {
   it("returns null when the feed is unreachable", async () => {
     expect(await fetchLiveCandidates(mockCandidatesFetch({ ok: false }))).toBeNull();
   });
+
+  it("drops malformed candidate elements instead of crashing render", async () => {
+    const data = [
+      null,
+      "oops",
+      { status: "proposed" }, // no url/company identity for candidateKey
+      { company: "GW Tech Parts", url: "https://gwtechparts.com/collections/all", status: "proposed" },
+    ];
+    const result = await fetchLiveCandidates(mockCandidatesFetch({ data }));
+    expect(result).toHaveLength(1);
+    expect(result[0].company).toBe("GW Tech Parts");
+  });
 });

@@ -93,7 +93,22 @@ export function AgentPage({
     isFinder && candidates && candidateDecisions
       ? approvedSupplierRows(candidates, candidateDecisions)
       : [];
-  const feed = isFinder && feeds[def.id] ? [...feeds[def.id], ...approvedRows] : feeds[def.id];
+  // They stay visible even if the base roster feed fails to load — but keep
+  // `null` (not `[]`) when there's genuinely nothing to show, so data-mode
+  // and hasFeed checks behave as before.
+  const baseFeed = feeds[def.id];
+  const feed =
+    isFinder && (baseFeed || approvedRows.length > 0)
+      ? [...(baseFeed || []), ...approvedRows]
+      : baseFeed;
+  // Finder metric cards must reflect the merged roster: agent.metrics was
+  // summarized from the base feed only, so approving a candidate grew the
+  // table while the cards stayed stale. Only recompute when a real roster is
+  // loaded — in demo mode agent.metrics is the animated simulation state.
+  const metrics =
+    isFinder && baseFeed && baseFeed.length > 0
+      ? FEED_CONTRACTS.finder.summarize(feed)
+      : agent.metrics;
   const dataMode = agentDataMode(def.id, { feeds: { ...feeds, [def.id]: feed } });
   const isLiveSource = feedSource && feedSource.source === "live";
   const showLiveSwitch =
@@ -189,7 +204,7 @@ export function AgentPage({
 
       <div className="mad-stat-row">
         {def.metricLabels.map((label, i) => (
-          <StatCard key={label} label={label} value={agent.metrics[i]} />
+          <StatCard key={label} label={label} value={metrics[i]} />
         ))}
       </div>
 

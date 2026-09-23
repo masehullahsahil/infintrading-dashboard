@@ -231,11 +231,17 @@ export function useAgentSimulation() {
       storedFeeds[d.id] = feeds[d.id] ? feeds[d.id].slice(0, MAX_STORED_ROWS) : null;
     });
     const payload = JSON.stringify({ statuses, feeds: storedFeeds, feedSources, deals });
-    if (payload === lastSavedRef.current) return;
-    lastSavedRef.current = payload;
+    // Candidate decisions live under their own storage key, so fold them into
+    // the persistence guard: approving/dismissing a candidate changes nothing
+    // in `payload`, and without this the write below is skipped and the
+    // decision is lost on reload.
+    const decisionsPayload = JSON.stringify(candidateDecisions);
+    const combined = payload + "\n" + decisionsPayload;
+    if (combined === lastSavedRef.current) return;
+    lastSavedRef.current = combined;
     try {
       window.localStorage.setItem(STORAGE_KEY, payload);
-      window.localStorage.setItem(CANDIDATE_DECISIONS_KEY, JSON.stringify(candidateDecisions));
+      window.localStorage.setItem(CANDIDATE_DECISIONS_KEY, decisionsPayload);
     } catch {
       // Storage full or unavailable — dashboard works fine without it.
     }
