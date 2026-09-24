@@ -34,5 +34,53 @@
   "why_promising": "Credible global ITAD with real US warehouses and even a UAE facility - refurbished bulk program could be a steady tested-unit source; Iron Mountain ownership adds balance-sheet legitimacy",
   "open_question": "bulk pricing levels vs auction comps; minimum order quantities",
   "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-24",
+  "company": "Biddergy",
+  "url": "https://www.biddergy.com/Event/Details/497515709/Surplus-Assets-Novi-Community-School-District/C161225/Electronics",
+  "type": "auction marketplace",
+  "location": "Kalamazoo MI, US",
+  "how_lots_sold": "public online auctions",
+  "bulk_evidence": "Sold school-surplus electronics May 2026: 2x 32-unit Chromebook carts @ $150 each, 3D printers, SMART displays, AV gear; recurring MI school-district surplus events (Novi CSD, Lenawee ISD, community college) + weekly consignment auctions; background: real Kalamazoo address (1919 E Kilgore Service Rd), Yelp reviews mixed (some bait-and-switch complaints) \u2014 watch but bid carefully",
+  "why_promising": "New Midwest (MI) online auction channel for school-district surplus tech with recurring events and visible sold prices \u2014 one watch point covers multiple districts",
+  "open_question": "buyer premium % + shipping from Kalamazoo; laptop-lot frequency per district",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-24",
+  "company": "Data Sales Co.",
+  "url": "https://www.datasales.com/",
+  "type": "ITAD / leasing",
+  "location": "Burnsville MN, US",
+  "how_lots_sold": "contact / quote (no public lots)",
+  "bulk_evidence": "No public lot sales found \u2014 wholesale remarketing channel unconfirmed; background: 50 yrs (founded 1973), Burnsville MN HQ 3450 W Burnsville Pkwy, 220k sq ft warehouse, ISO 9001/14001/45001, ITADA member, Fortune 500 ITAD clients, own trucking fleet, (800) 328-2730",
+  "why_promising": "50-year MN leasing/ITAD firm sitting on corporate lease-return flow; local to owner (Burnsville) \u2014 if they wholesale off-lease laptop lots it is a prime tested-unit source",
+  "open_question": "do they sell wholesale laptop lots to resellers, or only leasing/ITAD services?",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-24",
+  "company": "System Liquidation",
+  "url": "https://systemliquidation.com/blogs/news/top-tips-for-buying-refurbished-computers-laptops",
+  "type": "wholesaler / refurbisher",
+  "location": "Houston TX, US",
+  "how_lots_sold": "listed prices + bulk quotes (10+ units)",
+  "bulk_evidence": "Active refurbished laptop catalog with listed prices (ThinkPad T470 $189, Dell Latitude 5400 $349, T470s $289\u2013339) + bulk-order quote program for 10+ units, 1-yr warranty, ships nationwide; background: CNB Computers USA Inc DBA System Liquidation, 12539 Perry Rd Houston TX, Microsoft Authorized Refurbisher, HP/Acer/Lenovo verified partners \u2014 years in business unknown, thin third-party reviews",
+  "why_promising": "Transparent listed prices plus explicit 10+-unit bulk quotes on refurbished business laptops with warranty; US shipper",
+  "open_question": "actual bulk-quote discount depth vs auction comps; pricing on 50+ unit lots",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-24",
+  "company": "Ford & Ford Auctioneers",
+  "url": "https://fordford.net/event/unl-surplus-auction-saturday-august-17th-2024/",
+  "type": "auction house (university surplus)",
+  "location": "Lincoln NE, US",
+  "how_lots_sold": "public auctions (periodic, in-person)",
+  "bulk_evidence": "Aug 2024 UNL surplus auction incl. '30+ miscellaneous laptops' + Dell towers; runs University of Nebraska-Lincoln surplus auctions periodically (in-person); background: BBB A+, 45 yrs (since 1981), 2000 W Denton Rd Lincoln NE, (402) 475-7312, 100+ auctions/yr",
+  "why_promising": "Trusted 45-yr Midwest auctioneer running recurring university surplus auctions \u2014 same institutional-surplus model that already produced BUY lots",
+  "open_question": "UNL surplus auction cadence (how often); pickup-only vs freight availability",
+  "status": "proposed"
  }
 ]
