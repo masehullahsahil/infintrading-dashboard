@@ -82,5 +82,41 @@
   "why_promising": "Trusted 45-yr Midwest auctioneer running recurring university surplus auctions \u2014 same institutional-surplus model that already produced BUY lots",
   "open_question": "UNL surplus auction cadence (how often); pickup-only vs freight availability",
   "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-26",
+  "company": "University of Michigan Property Disposition (Dispo)",
+  "url": "https://dispo.umich.edu/",
+  "type": "university surplus",
+  "location": "Ann Arbor MI, US",
+  "how_lots_sold": "public online auction (eBids) + fixed-price 'Dispo Direct' sales",
+  "bulk_evidence": "Live 9/26: 'Lot of 10 Various PC Laptops' at $481.25 (ends ~4 days); dedicated recurring bulk categories 'Bulk PC Laptops & Tablets' (17 active listings) + 'Bulk Apple Laptops' (2) \u2014 not one-offs; own platform, independent of GovDeals/Public Surplus. Background: official U-M department, 3241 Baxter Rd Ann Arbor MI, [email protected]; published auction terms, pickup-oriented; no scam concern",
+  "why_promising": "Midwest university with verified recurring 10+ laptop lots on its own public platform \u2014 direct institutional source with no marketplace middleman",
+  "open_question": "freight/pickup support for out-of-state buyers; current terms on international/export sales (2015 terms said 'No International Sales'); buyer's premium + bulk-lot cadence",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-26",
+  "company": "Compass Auctions & Real Estate",
+  "url": "https://www.soldoncompass.com/auction/it-office-equipment-august-2022-4/",
+  "type": "auction house (industrial/government surplus)",
+  "location": "Chattanooga TN, US",
+  "how_lots_sold": "public online auction (own platform); shipping offered on IT sales",
+  "bulk_evidence": "Archived IT & Office Equipment sale incl. one lot of 24 assorted laptops + 20-unit access-point lots; recurring monthly IT & Municipal Surplus events across months (GoToAuction history); final laptop prices thin. Background: founded 2010, 50,000 sq ft Chattanooga warehouse, 3114 Freeman Ave Chattanooga TN 37406, 800-729-6466, TVA/Hamilton County contracts, NAA member; 3.9/5 (82 reviews, Loc8NearMe) \u2014 mixed",
+  "why_promising": "Regional auctioneer running recurring monthly IT surplus events with verified 10+ laptop lots and shipping offered \u2014 outside the already-watched platforms",
+  "open_question": "current laptop-lot frequency and freight cost/options to Minnesota",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-26",
+  "company": "Apto Solutions",
+  "url": "https://aptosolutions.com",
+  "type": "ITAD (enterprise lease-return remarketing)",
+  "location": "Atlanta GA, US",
+  "how_lots_sold": "buyer network on proprietary 'Hardware Auction' platform (buyer enrollment required)",
+  "bulk_evidence": "No public 10+ lot with prices found \u2014 sales history thin. Background: 1910 MacArthur Blvd Atlanta GA 30318, 20+ years ITAD, ISO 27001 + NAID AAA certified, named among top six vendors in 2026 hyperscaler ITAD market report (PitchBook/PRWeb); no red flags",
+  "why_promising": "Credible lease-return ITAD with explicit buyer-facing auction channel \u2014 right business model for off-lease laptop lots, proposed on potential only",
+  "open_question": "buyer enrollment requirements; whether 10+ unit laptop lots are routinely listed",
+  "status": "proposed"
  }
 ]
