@@ -118,5 +118,53 @@
   "why_promising": "Credible lease-return ITAD with explicit buyer-facing auction channel \u2014 right business model for off-lease laptop lots, proposed on potential only",
   "open_question": "buyer enrollment requirements; whether 10+ unit laptop lots are routinely listed",
   "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-27",
+  "company": "Trade-In Tech",
+  "url": "https://www.tradeintech.com/",
+  "type": "B2B marketplace",
+  "location": "Stanton CA, US (global membership)",
+  "how_lots_sold": "member listings (subscription)",
+  "bulk_evidence": "No public lot listings visible; operating since 2012 (domain Mar 2013); verified-dealer network incl. Buyback Solutions, Mass Mobile, Equinox Electronics; HQ Trade-In Tech LLC, 12362 Beach Blvd Ste 21, Stanton CA 90680, +1 323-307-7657",
+  "why_promising": "Verified electronics-dealer network incl. computers/tablets; one watch point covering many wholesalers at once",
+  "open_question": "Yearly/monthly membership cost; whether 10+ unit laptop lots actually trade (site is smartphone-centric)",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-27",
+  "company": "Reusetek",
+  "url": "https://reusetek.com",
+  "type": "wholesaler/refurbisher",
+  "location": "Tustin CA, US",
+  "how_lots_sold": "listed prices + wholesale purchase discounts",
+  "bulk_evidence": "Wholesale banner on site ('exclusive discounts on wholesale purchases'); 3rd-party reviews mention pallet-sized purchases ('three pallets of receipt printers'); 4.2/5 (39 reviews, Loc8NearMe); Microsoft Registered Refurbisher; 15561 Del Amo Ave, Tustin CA 92780, (855) 305-7897",
+  "why_promising": "Refurbisher with explicit wholesale channel and verified pallet-sized purchases by real buyers",
+  "open_question": "Wholesale discount depth on 10+ unit laptop lots",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-27",
+  "company": "Laptop Plaza",
+  "url": "https://laptopplaza.com",
+  "type": "distributor/wholesaler",
+  "location": "US (address unverified)",
+  "how_lots_sold": "deal price list via account executives",
+  "bulk_evidence": "No public lot history visible - thin. Claims 'one of the largest distributors in the world' of new & manufacturer-refurbished laptops (Apple/HP/Lenovo/Asus/Acer/Dell); background thin: no address/phone found on homepage",
+  "why_promising": "Manufacturer-refurbished laptop distributor with deal price lists - bulk channel could fit the buying model; proposed on potential only",
+  "open_question": "Verify address, years in business, reviews; minimum order sizes; actual pricing",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-27",
+  "company": "HiBid",
+  "url": "https://hibid.com",
+  "type": "auction marketplace",
+  "location": "US (multi-state)",
+  "how_lots_sold": "public online auctions via independent affiliate auctioneers",
+  "bulk_evidence": "Live laptop/computers category with state-filtered auctions (e.g. Buffalo NY laptop auction closing 9/27/26); long-established auction platform hosting thousands of independent auctioneers incl. Midwest sellers",
+  "why_promising": "Same platform-model as K-BID: one watch point covering many independent sellers with dedicated laptop/computer categories",
+  "open_question": "Which affiliate sellers run bulk laptop lots regularly; buyer premiums vary by seller",
+  "status": "proposed"
  }
 ]
