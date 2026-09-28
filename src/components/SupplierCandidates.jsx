@@ -1,8 +1,9 @@
 // Review panel for newly discovered supplier candidates. Pinned at the top of
 // the Finder page so proposed suppliers are impossible to miss. Approving
 // queues the candidate and wires it into the daily scan roster automatically
-// (within ~15 min); dismissing hides it. Decisions persist in the browser;
-// the canonical roster + watch list are updated by the approval job.
+// (within ~a minute, once the build carries VITE_APPROVE_SECRET); dismissing
+// hides it. Decisions persist in the browser; the canonical roster + watch
+// list are updated by the approval hook.
 
 import { T, FONTS } from "../theme";
 
