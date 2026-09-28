@@ -142,5 +142,41 @@
   "why_promising": "Manufacturer-refurbished laptop distributor with deal price lists - bulk channel could fit the buying model; proposed on potential only",
   "open_question": "Verify address, years in business, reviews; minimum order sizes; actual pricing",
   "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-28",
+  "company": "PCLiquidations",
+  "url": "https://www.pcliquidations.com/",
+  "type": "wholesaler / refurbisher",
+  "location": "Jacksonville FL, US",
+  "how_lots_sold": "listed prices + bulk-order line (888-654-3376)",
+  "bulk_evidence": "104+ refurbished laptop SKUs live (Dell Latitude 3400-5590, EliteBook, ThinkPad; $200-300 retail); 55,000 sq ft DC; claims large IT refresh orders + explicit bulk-order contact; no public bulk-lot pricing found \u2014 thin. background: 35 yrs (since 1991), 140 Stockton St Jacksonville FL, phone 888-654-3376, 4.3-4.7 review ratings, 250k customers, LinkedIn 51-200 employees; no red flags",
+  "why_promising": "Established refurbisher of exactly the business-grade models Evaluator likes (Latitude/EliteBook/ThinkPad) with a real warehouse and explicit bulk channel \u2014 one call could unlock 10+ unit wholesale pricing",
+  "open_question": "bulk discount depth vs $200-300 retail list (too high for UAE model at list); minimum order quantity",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-28",
+  "company": "A-Z Computer Liquidators (SpinTradeExchange)",
+  "url": "https://www.spintradeexchange.com/nashville_computer_liquidators/",
+  "type": "ITAD / liquidator",
+  "location": "US (nationwide network; physical HQ unverified)",
+  "how_lots_sold": "contact / quote ('email surplus inventory'); site nav lists LAPTOP SYSTEMS SALE + COMPUTER LIQUIDATION LOTS",
+  "bulk_evidence": "Buys/sells corporate/bankruptcy liquidation lots incl. used laptops (Dell/HP/Lenovo/IBM/Toshiba); dedicated laptop-systems-sale page; no public lot list with prices found \u2014 thin. background: domain since Jan 2002, 1-800-927-8340; city pages are SEO templates (Nashville, Arkansas, Batavia NY, Silicon Valley...) with no verified address \u2014 background thin: proposed on potential only",
+  "why_promising": "24-year-old liquidation operation targeting exactly the corporate-closure/upgrade laptop flow we want; standing 'laptop systems sale' suggests wholesale inventory to resellers",
+  "open_question": "physical location/warehouse; whether they sell to resellers or only buy; typical lot sizes",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-28",
+  "company": "Mid-Plains Community College (North Platte CC) surplus IT auctions",
+  "url": "https://airauctioneer.com/mid-plains-community-college",
+  "type": "university surplus (own AirAuctioneer platform)",
+  "location": "North Platte, NE, US",
+  "how_lots_sold": "public online auction + buy-it-now per event (AirAuctioneer; page live between events)",
+  "bulk_evidence": "Documented recurring auctions 2021-2025: Aug 2022 (~50 laptops, 10 Dell AIOs, 6 iMacs), Oct 2023 (40+ laptops/desktops incl. 15 iMacs), Feb 2025 (laptops/MacBooks/iPads/printers), Jun 2021, Mar 2022. background: official community college (news releases via northplattepost); pickup 1101 Halligan Dr North Platte; cash/check only; real institution, no legitimacy concern",
+  "why_promising": "Recurring Midwest institutional IT surplus with verified 40-50 unit laptop events \u2014 same institutional-surplus model that already scored BUY lots",
+  "open_question": "cash/check-only payment; pickup-only western Nebraska (freight to MN); next event timing",
+  "status": "proposed"
  }
 ]
