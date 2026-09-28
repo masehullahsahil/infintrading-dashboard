@@ -21,25 +21,28 @@ const TICK_MS = 2600;
 const MAX_LOGS = 40;
 
 // Approving a candidate on the dashboard wires it straight into the daily
-// scan roster: this topic receives {"company", "url", ...} and a scheduled job
-// on the agent side picks it up (~15 min) and promotes the supplier. Only
-// candidates already vetted in the review panel can be promoted this way.
-const APPROVAL_TOPIC = "itappr-81c7329bf3ad4bf34c78f142082bf0c5";
+// scan roster: this endpoint queues the approval and a hook on the agent side
+// picks it up (~30s) and promotes the supplier. Only candidates already
+// vetted in the review panel can be promoted this way. The secret is baked in
+// at build time (VITE_APPROVE_SECRET); without it, approvals stay local-only.
+const APPROVE_URL = "https://infintrading-hooks.vercel.app/api/approve";
+const APPROVE_SECRET = import.meta.env.VITE_APPROVE_SECRET || "";
 
 function notifyApprovalQueued(candidate) {
+  if (!APPROVE_SECRET) return false;
   try {
-    fetch(`https://ntfy.sh/${APPROVAL_TOPIC}`, {
+    fetch(APPROVE_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         company: candidate.company || "",
         url: candidate.url || "",
-        at: new Date().toISOString(),
-        source: "dashboard-approve",
+        secret: APPROVE_SECRET,
       }),
     }).catch(() => {});
+    return true;
   } catch {
-    /* fire-and-forget: the local decision still applies */
+    return false;
   }
 }
 
@@ -429,9 +432,12 @@ export function useAgentSimulation() {
   // Candidate review queue decisions.
   const approveSupplierCandidate = useCallback((candidate) => {
     setCandidateDecisions((prev) => approveCandidateDecision(prev, candidate));
-    notifyApprovalQueued(candidate);
+    const queued = notifyApprovalQueued(candidate);
     setTicker((prev) =>
-      [...prev, `FINDER · Approved candidate ${candidate.company || "supplier"} — wiring into the daily watch…`].slice(-10)
+      [...prev, queued
+        ? `FINDER · Approved candidate ${candidate.company || "supplier"} — wiring into the daily watch…`
+        : `FINDER · Approved candidate ${candidate.company || "supplier"} — approved locally`
+      ].slice(-10)
     );
   }, []);
 
