@@ -1,8 +1,8 @@
 // Review panel for newly discovered supplier candidates. Pinned at the top of
 // the Finder page so proposed suppliers are impossible to miss. Approving
-// merges a candidate into the roster view as under_review; dismissing hides it.
-// Decisions persist in the browser; the canonical roster + watch list are still
-// updated by the owner (chat), never automatically.
+// queues the candidate and wires it into the daily scan roster automatically
+// (within ~15 min); dismissing hides it. Decisions persist in the browser;
+// the canonical roster + watch list are updated by the approval job.
 
 import { T, FONTS } from "../theme";
 

@@ -20,6 +20,29 @@ const MAX_STORED_ROWS = 200;
 const TICK_MS = 2600;
 const MAX_LOGS = 40;
 
+// Approving a candidate on the dashboard wires it straight into the daily
+// scan roster: this topic receives {"company", "url", ...} and a scheduled job
+// on the agent side picks it up (~15 min) and promotes the supplier. Only
+// candidates already vetted in the review panel can be promoted this way.
+const APPROVAL_TOPIC = "itappr-81c7329bf3ad4bf34c78f142082bf0c5";
+
+function notifyApprovalQueued(candidate) {
+  try {
+    fetch(`https://ntfy.sh/${APPROVAL_TOPIC}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        company: candidate.company || "",
+        url: candidate.url || "",
+        at: new Date().toISOString(),
+        source: "dashboard-approve",
+      }),
+    }).catch(() => {});
+  } catch {
+    /* fire-and-forget: the local decision still applies */
+  }
+}
+
 // Where a live feed came from: "live" (automatic scan) or "upload" (manual
 // file). A manual upload always wins — the live fetcher never overwrites it.
 const EMPTY_SOURCES = {
@@ -406,8 +429,9 @@ export function useAgentSimulation() {
   // Candidate review queue decisions.
   const approveSupplierCandidate = useCallback((candidate) => {
     setCandidateDecisions((prev) => approveCandidateDecision(prev, candidate));
+    notifyApprovalQueued(candidate);
     setTicker((prev) =>
-      [...prev, `FINDER · Approved candidate ${candidate.company || "supplier"} — merged into roster as under review`].slice(-10)
+      [...prev, `FINDER · Approved candidate ${candidate.company || "supplier"} — wiring into the daily watch…`].slice(-10)
     );
   }, []);
 
