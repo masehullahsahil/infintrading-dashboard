@@ -398,5 +398,21 @@
   "contact": "https://www.k-bid.com/auction/45889",
   "found_date": "2026-09-22",
   "status": "under_review"
+ },
+ {
+  "supplier_name": "HiBid",
+  "supplier_type": "auction marketplace (multi-state)",
+  "source_channel": "public online auctions via affiliate auctioneers",
+  "contact": "https://hibid.com/",
+  "found_date": "2026-09-27",
+  "status": "active"
+ },
+ {
+  "supplier_name": "Reusetek",
+  "supplier_type": "wholesaler/refurbisher",
+  "source_channel": "listed prices + wholesale purchase discounts",
+  "contact": "https://reusetek.com/",
+  "found_date": "2026-09-27",
+  "status": "active"
  }
 ]
