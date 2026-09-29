@@ -1,7 +1,7 @@
 // AgentDashboard — composition root. All state lives in useAgentSimulation;
 // this component only lays out the ticker, sidebar, and the active view.
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AGENT_DEFS } from "./lib/agents";
 import { useAgentSimulation } from "./hooks/useAgentSimulation";
 import { useIsNarrow } from "./hooks/useIsNarrow";
@@ -11,15 +11,25 @@ import { Overview } from "./components/Overview";
 import { AgentPage } from "./components/AgentPage";
 import { DealTrackerPage } from "./components/DealTrackerPage";
 import { LockScreen } from "./components/LockScreen";
-import { isGateConfigured, isUnlocked, setUnlocked, lock } from "./lib/dashboardAuth";
+import { checkSession, setUnlocked, lock, logout } from "./lib/dashboardAuth";
 import { dealIdFromListing } from "./lib/deals";
 
 export default function AgentDashboard() {
   const [active, setActive] = useState("overview");
   // Access gate: the dashboard stays locked until the password is entered.
   // Unlock persists in this browser until the Lock button is used.
-  const [unlocked, setUnlockedState] = useState(() => isUnlocked());
-  const gateConfigured = isGateConfigured();
+  const [unlocked, setUnlockedState] = useState(false);
+  const [authReady, setAuthReady] = useState(false);
+  const [gateConfigured, setGateConfigured] = useState(false);
+
+  useEffect(() => {
+    checkSession().then((status) => {
+      setGateConfigured(status.configured);
+      setUnlockedState(status.authenticated);
+      if (status.authenticated) setUnlocked();
+      setAuthReady(true);
+    });
+  }, []);
 
   function handleUnlock() {
     setUnlocked();
@@ -28,6 +38,7 @@ export default function AgentDashboard() {
 
   function handleLock() {
     lock();
+    void logout();
     setUnlockedState(false);
   }
 
@@ -41,6 +52,8 @@ export default function AgentDashboard() {
     liveMeta,
     liveAvailable,
     supplierLiveAvailable,
+    liveError,
+    supplierLiveError,
     candidates,
     candidateDecisions,
     toggleAgent,
@@ -57,7 +70,7 @@ export default function AgentDashboard() {
   const narrow = useIsNarrow();
   const trackedIds = new Set(deals.map((d) => d.id));
 
-  if (!gateConfigured || !unlocked) {
+  if (!authReady || !gateConfigured || !unlocked) {
     return <LockScreen configured={gateConfigured} onUnlock={handleUnlock} />;
   }
 
@@ -89,6 +102,8 @@ export default function AgentDashboard() {
               liveMeta={active === "evaluator" ? liveMeta : null}
               liveAvailable={active === "evaluator" && liveAvailable}
               supplierLiveAvailable={active === "finder" && supplierLiveAvailable}
+              liveError={active === "evaluator" && liveError}
+              supplierLiveError={active === "finder" && supplierLiveError}
               onUseLiveFeed={useLiveFeed}
               onUseLiveSuppliers={useLiveSuppliers}
               onToggle={() => toggleAgent(active)}

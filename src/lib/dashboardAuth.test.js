@@ -1,100 +1,52 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import {
-  sha256Hex,
-  safeEqualHex,
-  verifyPassword,
-  isUnlocked,
-  setUnlocked,
-  lock,
-  isGateConfigured,
-  getConfiguredHash,
-} from "./dashboardAuth";
+import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
+import { checkSession, isGateConfigured, isUnlocked, lock, login, logout, setUnlocked } from "./dashboardAuth";
 
-describe("sha256Hex", () => {
-  it("hashes a known value", async () => {
-    // SHA-256("abc") — canonical test vector
-    expect(await sha256Hex("abc")).toBe(
-      "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
-    );
-  });
-});
-
-describe("safeEqualHex", () => {
-  it("compares equal strings", () => {
-    expect(safeEqualHex("abcd", "abcd")).toBe(true);
-  });
-  it("rejects different strings of the same length", () => {
-    expect(safeEqualHex("abcd", "abce")).toBe(false);
-  });
-  it("rejects different lengths without leaking", () => {
-    expect(safeEqualHex("abc", "abcd")).toBe(false);
-  });
-  it("rejects non-strings", () => {
-    expect(safeEqualHex(null, "abcd")).toBe(false);
-  });
-});
-
-describe("verifyPassword", () => {
+describe("server-backed dashboard authentication", () => {
   beforeEach(() => {
-    vi.stubEnv("VITE_DASHBOARD_PASSWORD_SHA256", "");
+    vi.stubGlobal("fetch", vi.fn());
+    vi.stubGlobal("sessionStorage", {
+      getItem: () => null,
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+    });
   });
 
-  it("fails closed when no hash is configured", async () => {
-    expect(isGateConfigured()).toBe(false);
-    expect(getConfiguredHash()).toBe("");
-    expect(await verifyPassword("anything")).toBe(false);
-  });
+  afterEach(() => vi.unstubAllGlobals());
 
-  it("accepts the right password and rejects the wrong one", async () => {
-    const hash = await sha256Hex("correct horse");
-    vi.stubEnv("VITE_DASHBOARD_PASSWORD_SHA256", hash);
+  it("always treats the client gate as server-configured", () => {
     expect(isGateConfigured()).toBe(true);
-    expect(await verifyPassword("correct horse")).toBe(true);
-    expect(await verifyPassword("wrong horse")).toBe(false);
   });
 
-  it("ignores a malformed configured hash", async () => {
-    vi.stubEnv("VITE_DASHBOARD_PASSWORD_SHA256", "not-a-hash");
-    expect(isGateConfigured()).toBe(false);
-    expect(await verifyPassword("not-a-hash")).toBe(false);
-  });
-});
-
-describe("persistent lock state", () => {
-  let store;
-
-  beforeEach(() => {
-    store = new Map();
-    vi.stubGlobal("localStorage", {
-      getItem: (k) => (store.has(k) ? store.get(k) : null),
-      setItem: (k, v) => store.set(k, String(v)),
-      removeItem: (k) => store.delete(k),
-      clear: () => store.clear(),
-    });
+  it("checks the HttpOnly server session", async () => {
+    fetch.mockResolvedValue({ ok: true, json: async () => ({ configured: true, authenticated: true }) });
+    await expect(checkSession()).resolves.toEqual({ configured: true, authenticated: true });
+    expect(fetch).toHaveBeenCalledWith("/api/auth", { credentials: "same-origin" });
   });
 
-  afterEach(() => {
-    vi.unstubAllGlobals();
+  it("logs in through the server without sending a secret to the client bundle", async () => {
+    fetch.mockResolvedValue({ ok: true });
+    await expect(login("correct horse")).resolves.toBe(true);
+    expect(fetch).toHaveBeenCalledWith("/api/auth", expect.objectContaining({ method: "POST" }));
+    expect(fetch.mock.calls[0][1].body).toContain('"action":"login"');
   });
 
-  it("starts locked, unlocks, and re-locks", () => {
+  it("fails closed when the server is unavailable", async () => {
+    fetch.mockRejectedValue(new Error("offline"));
+    await expect(checkSession()).resolves.toEqual({ configured: false, authenticated: false });
+    await expect(login("anything")).resolves.toBe(false);
+  });
+
+  it("keeps only a non-authoritative session marker locally", () => {
     expect(isUnlocked()).toBe(false);
     setUnlocked();
-    expect(isUnlocked()).toBe(true);
     lock();
-    expect(isUnlocked()).toBe(false);
+    expect(sessionStorage.setItem).toHaveBeenCalled();
+    expect(sessionStorage.removeItem).toHaveBeenCalled();
   });
 
-  it("stays unlocked in a fresh tab reading the same browser profile", () => {
-    setUnlocked();
-    // simulate a new tab: a fresh localStorage wrapper over the same
-    // underlying browser store — with sessionStorage this would be empty
-    vi.stubGlobal("localStorage", {
-      getItem: (k) => (store.has(k) ? store.get(k) : null),
-      setItem: (k, v) => store.set(k, String(v)),
-      removeItem: (k) => store.delete(k),
-      clear: () => store.clear(),
-    });
-    expect(isUnlocked()).toBe(true);
+  it("logs out through the server", async () => {
+    fetch.mockResolvedValue({ ok: true });
+    await logout();
+    expect(fetch).toHaveBeenCalledWith("/api/auth", expect.objectContaining({ method: "POST" }));
   });
 });

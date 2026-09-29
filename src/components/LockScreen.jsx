@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Lock } from "lucide-react";
 import { T, FONTS } from "../theme";
-import { verifyPassword } from "../lib/dashboardAuth";
+import { login } from "../lib/dashboardAuth";
 
 /** Password gate shown before the dashboard. Nothing behind it renders until unlock. */
 export function LockScreen({ configured, onUnlock }) {
@@ -15,7 +15,7 @@ export function LockScreen({ configured, onUnlock }) {
     setBusy(true);
     setError("");
     try {
-      const ok = await verifyPassword(password);
+      const ok = await login(password);
       if (ok) {
         onUnlock();
       } else {
@@ -23,7 +23,7 @@ export function LockScreen({ configured, onUnlock }) {
         setPassword("");
       }
     } catch {
-      setError("This browser can't check the password (WebCrypto unavailable).");
+      setError("Unable to reach the dashboard authentication service.");
     } finally {
       setBusy(false);
     }
@@ -140,8 +140,9 @@ export function LockScreen({ configured, onUnlock }) {
             }}
           >
             Access lock is not configured yet. Set the{" "}
-            <span style={{ fontFamily: FONTS.mono }}>VITE_DASHBOARD_PASSWORD_SHA256</span>{" "}
-            environment variable and redeploy — see README “Dashboard password”.
+              <span style={{ fontFamily: FONTS.mono }}>DASHBOARD_PASSWORD_SHA256</span>{" "}
+              and <span style={{ fontFamily: FONTS.mono }}>DASHBOARD_SESSION_SECRET</span>{" "}
+              server variables, then redeploy — see README “Dashboard password”.
           </div>
         )}
       </form>
