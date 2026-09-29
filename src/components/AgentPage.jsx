@@ -24,7 +24,7 @@ import {
   approvedSupplierRows,
 } from "../lib/supplierCandidates";
 
-function LiveBadge({ liveMeta }) {
+function LiveBadge({ liveMeta, error = false }) {
   const when = liveMeta && liveMeta.scan_at ? liveMeta.scan_at : null;
   const verdicts = liveMeta && liveMeta.verdicts ? liveMeta.verdicts : null;
   return (
@@ -49,18 +49,20 @@ function LiveBadge({ liveMeta }) {
           width: 8,
           height: 8,
           borderRadius: "50%",
-          background: "#4ade80",
+          background: error ? T.red : "#4ade80",
         }}
         aria-hidden="true"
       />
-      <strong>Live feed</strong>
+      <strong>{error ? "Live feed unavailable" : "Live feed"}</strong>
       {when && <span style={{ color: T.dim }}>updated {when}</span>}
       {verdicts && (
         <span style={{ color: T.dim }}>
           {verdicts.BUY || 0} BUY · {verdicts.WATCH || 0} watch · {verdicts.SKIP || 0} skip
         </span>
       )}
-      <span style={{ color: T.dim }}>— refreshes automatically after each scan</span>
+      <span style={{ color: T.dim }}>
+        — {error ? "showing the last available feed; retry when the scan service is restored" : "refreshes automatically after each scan"}
+      </span>
     </div>
   );
 }
@@ -73,6 +75,8 @@ export function AgentPage({
   liveMeta,
   liveAvailable,
   supplierLiveAvailable,
+  liveError,
+  supplierLiveError,
   onUseLiveFeed,
   onUseLiveSuppliers,
   onToggle,
@@ -89,18 +93,22 @@ export function AgentPage({
   const contract = FEED_CONTRACTS[def.id];
   const isFinder = def.id === "finder";
   // Approved candidates merge into the roster view as under_review rows.
-  const approvedRows =
-    isFinder && candidates && candidateDecisions
+  const approvedRows = useMemo(
+    () => (isFinder && candidates && candidateDecisions
       ? approvedSupplierRows(candidates, candidateDecisions)
-      : [];
+      : []),
+    [isFinder, candidates, candidateDecisions]
+  );
   // They stay visible even if the base roster feed fails to load — but keep
   // `null` (not `[]`) when there's genuinely nothing to show, so data-mode
   // and hasFeed checks behave as before.
   const baseFeed = feeds[def.id];
-  const feed =
-    isFinder && (baseFeed || approvedRows.length > 0)
+  const feed = useMemo(
+    () => (isFinder && (baseFeed || approvedRows.length > 0)
       ? [...(baseFeed || []), ...approvedRows]
-      : baseFeed;
+      : baseFeed),
+    [isFinder, baseFeed, approvedRows]
+  );
   // Finder metric cards must reflect the merged roster: agent.metrics was
   // summarized from the base feed only, so approving a candidate grew the
   // table while the cards stayed stale. Only recompute when a real roster is
@@ -159,7 +167,12 @@ export function AgentPage({
         onToggle={onToggle}
       />
 
-      {isLiveSource && <LiveBadge liveMeta={liveMeta} />}
+      {(isLiveSource || (def.id === "evaluator" ? liveError : supplierLiveError)) && (
+        <LiveBadge
+          liveMeta={liveMeta}
+          error={def.id === "evaluator" ? liveError : supplierLiveError}
+        />
+      )}
 
       {showLiveSwitch && (
         <div style={{ marginBottom: 16 }}>

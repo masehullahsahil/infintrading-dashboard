@@ -1,54 +1,56 @@
-// Dashboard access gate. The password itself is never stored in the repo:
-// at build time, Vercel embeds VITE_DASHBOARD_PASSWORD_SHA256 (the hex
-// SHA-256 of the chosen password) into the bundle, and the typed password
-// is hashed in the browser and compared. Unlock persists in this browser
-// (localStorage) until the Lock button is used — so a trusted laptop only
-// asks for the password once. This is a lightweight client-side gate, not
-// strong access control: anyone opening this browser gets in while unlocked.
-
 const SESSION_KEY = "infintrading-dashboard-unlocked";
-const ENV_KEY = "VITE_DASHBOARD_PASSWORD_SHA256";
 
-export function getConfiguredHash() {
-  const raw = (import.meta.env?.[ENV_KEY] || "").trim().toLowerCase();
-  return /^[0-9a-f]{64}$/.test(raw) ? raw : "";
-}
-
+// Authentication is intentionally server-backed. No password hash or approval
+// secret is bundled into the client.
 export function isGateConfigured() {
-  return getConfiguredHash().length === 64;
+  return true;
 }
 
-function subtleCrypto() {
-  if (typeof crypto !== "undefined" && crypto.subtle?.digest) return crypto.subtle;
-  return null;
+export async function checkSession() {
+  try {
+    const response = await fetch("/api/auth", { credentials: "same-origin" });
+    const data = await response.json();
+    return {
+      configured: Boolean(data.configured),
+      authenticated: Boolean(data.authenticated),
+    };
+  } catch {
+    return { configured: false, authenticated: false };
+  }
 }
 
-export async function sha256Hex(text) {
-  const subtle = subtleCrypto();
-  if (!subtle) throw new Error("WebCrypto SHA-256 is unavailable in this browser");
-  const bytes = await subtle.digest("SHA-256", new TextEncoder().encode(text));
-  return [...new Uint8Array(bytes)].map((b) => b.toString(16).padStart(2, "0")).join("");
+export async function login(password) {
+  try {
+    const response = await fetch("/api/auth", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "login", password }),
+    });
+    return response.ok;
+  } catch {
+    return false;
+  }
 }
 
-/** Constant-time hex comparison so a wrong guess leaks nothing about the hash. */
-export function safeEqualHex(a, b) {
-  if (typeof a !== "string" || typeof b !== "string") return false;
-  if (a.length !== b.length) return false;
-  let diff = 0;
-  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  return diff === 0;
+export async function logout() {
+  try {
+    await fetch("/api/auth", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "logout" }),
+    });
+  } catch {
+    // The server session expires independently if the network is unavailable.
+  }
 }
 
-export async function verifyPassword(password) {
-  const expected = getConfiguredHash();
-  if (!expected) return false;
-  const actual = await sha256Hex(password);
-  return safeEqualHex(actual, expected);
-}
-
+// Kept as a compatibility helper for existing callers/tests. Unlock state is
+// no longer trusted from localStorage.
 export function isUnlocked() {
   try {
-    return localStorage.getItem(SESSION_KEY) === "1";
+    return sessionStorage.getItem(SESSION_KEY) === "1";
   } catch {
     return false;
   }
@@ -56,15 +58,15 @@ export function isUnlocked() {
 
 export function setUnlocked() {
   try {
-    localStorage.setItem(SESSION_KEY, "1");
+    sessionStorage.setItem(SESSION_KEY, "1");
   } catch {
-    // private mode etc. — the gate just re-locks next load
+    // The HttpOnly server cookie remains authoritative.
   }
 }
 
 export function lock() {
   try {
-    localStorage.removeItem(SESSION_KEY);
+    sessionStorage.removeItem(SESSION_KEY);
   } catch {
     // ignore
   }

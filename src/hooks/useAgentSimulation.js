@@ -21,24 +21,16 @@ const TICK_MS = 2600;
 const MAX_LOGS = 40;
 
 // Approving a candidate on the dashboard wires it straight into the daily
-// scan roster: this endpoint queues the approval and a hook on the agent side
-// picks it up (~30s) and promotes the supplier. Only candidates already
-// vetted in the review panel can be promoted this way. The secret is baked in
-// at build time (VITE_APPROVE_SECRET); without it, approvals stay local-only.
-const APPROVE_URL = "https://infintrading-hooks.vercel.app/api/approve";
-const APPROVE_SECRET = import.meta.env.VITE_APPROVE_SECRET || "";
+// scan roster. The browser calls our same-origin server function; that
+// function keeps the upstream approval secret server-side.
+const APPROVE_URL = "/api/approve";
 
 function notifyApprovalQueued(candidate) {
-  if (!APPROVE_SECRET) return false;
   try {
     fetch(APPROVE_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        company: candidate.company || "",
-        url: candidate.url || "",
-        secret: APPROVE_SECRET,
-      }),
+      body: JSON.stringify({ company: candidate.company || "", url: candidate.url || "" }),
     }).catch(() => {});
     return true;
   } catch {
@@ -172,6 +164,8 @@ export function useAgentSimulation() {
   const [liveMeta, setLiveMeta] = useState(null);
   const [liveAvailable, setLiveAvailable] = useState(false);
   const [supplierLiveAvailable, setSupplierLiveAvailable] = useState(false);
+  const [liveError, setLiveError] = useState(false);
+  const [supplierLiveError, setSupplierLiveError] = useState(false);
   const [candidates, setCandidates] = useState([]);
   const [candidateDecisions, setCandidateDecisions] = useState(loadCandidateDecisions);
   const [ticker, setTicker] = useState(["System online — 4 agents initialized"]);
@@ -361,7 +355,12 @@ export function useAgentSimulation() {
     liveAttemptedRef.current = true;
     let cancelled = false;
     fetchLiveFeed().then((live) => {
-      if (cancelled || !live) return;
+      if (cancelled) return;
+      if (!live) {
+        setLiveError(true);
+        return;
+      }
+      setLiveError(false);
       setLiveMeta(live.meta);
       setLiveAvailable(true);
       const current = feedSources.evaluator;
@@ -384,7 +383,11 @@ export function useAgentSimulation() {
   // Explicit operator action: switch the Evaluator back to the live feed.
   const useLiveFeed = useCallback(async () => {
     const live = await fetchLiveFeed();
-    if (!live) return false;
+    if (!live) {
+      setLiveError(true);
+      return false;
+    }
+    setLiveError(false);
     setLiveMeta(live.meta);
     setLiveAvailable(true);
     const when =
@@ -401,7 +404,12 @@ export function useAgentSimulation() {
     supplierLiveAttemptedRef.current = true;
     let cancelled = false;
     fetchLiveSuppliers().then((live) => {
-      if (cancelled || !live) return;
+      if (cancelled) return;
+      if (!live) {
+        setSupplierLiveError(true);
+        return;
+      }
+      setSupplierLiveError(false);
       setSupplierLiveAvailable(true);
       const current = feedSources.finder;
       const shouldApply = !feeds.finder || (current && current.source === "live");
@@ -423,7 +431,11 @@ export function useAgentSimulation() {
   // Explicit operator action: switch the Finder back to the live roster.
   const useLiveSuppliers = useCallback(async () => {
     const live = await fetchLiveSuppliers();
-    if (!live) return false;
+    if (!live) {
+      setSupplierLiveError(true);
+      return false;
+    }
+    setSupplierLiveError(false);
     setSupplierLiveAvailable(true);
     applyFeed("finder", live.rows, "live supplier roster", "live");
     return true;
@@ -454,6 +466,8 @@ export function useAgentSimulation() {
     liveMeta,
     liveAvailable,
     supplierLiveAvailable,
+    liveError,
+    supplierLiveError,
     candidates,
     candidateDecisions,
     toggleAgent,
