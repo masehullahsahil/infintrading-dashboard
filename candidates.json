@@ -178,5 +178,29 @@
   "why_promising": "Recurring Midwest institutional IT surplus with verified 40-50 unit laptop events \u2014 same institutional-surplus model that already scored BUY lots",
   "open_question": "cash/check-only payment; pickup-only western Nebraska (freight to MN); next event timing",
   "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-29",
+  "company": "Filmar Technologies",
+  "url": "https://filmar.com",
+  "type": "ITAD / wholesaler",
+  "location": "Shelby Township, MI, US",
+  "how_lots_sold": "listed lots + email bid offers (best-offer bids w/ spreadsheets) + reseller program",
+  "bulk_evidence": "Documented lot posts w/ prices: 144x HP EliteBook 840G2 ($426/ea list), 50x HP ProBook 650G4 @ $170/ea, 119x mixed laptop lot $15,000, 59x MacBook Pro lot $30k, 600x Dell 7050 SFF @ $114k; recurring 'Filmar bids' email-lot flow. background: ~20 yrs IT resale (Phil Biundo), real warehouse 14125 Simone Dr Shelby Twp MI 48315, (586) 580-2524, claims BBB A+ / 5-star Google, 30-day warranty, wire or PayPal (+3%), buyer pays freight",
+  "why_promising": "Midwest ITAD with verified recurring 50-600 unit laptop lot flow and an email-offer model like Dynamic Lifecycle's - quotes obtainable without auction games, no buyer premium",
+  "open_question": "bulk-quote depth vs listed per-unit prices; confirm email-lot list still active (latest blog lot post ~2024)",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-09-29",
+  "company": "Ohio State Surplus (Ohio DAS State & Federal Surplus Services)",
+  "url": "https://ohiodas.force.com/surplus/s/currentinventory",
+  "type": "government surplus auction",
+  "location": "Columbus, OH, US",
+  "how_lots_sold": "public online auction (contractor-run); 7-day public window after agency/municipality windows",
+  "bulk_evidence": "Aggregated 2026 sales: 50x Dell laptops (Sep 2026), 60x Dell laptops (May 2026), 11x Dell Latitude 5320 (Jun 2026), 9x Surface Book 3 (Apr 2026), 9x Dell OptiPlex AIOs (Sep 2026) - recurring 10-60 unit laptop lots. background: official Ohio state agency (DAS), 4200 Surface Rd Columbus OH, zero legitimacy concern; as-is where-is",
+  "why_promising": "Same state-surplus model that already scored BUY lots on IL iBid - the Ohio equivalent, verified recurring 10-60 unit laptop lots in 2026; Midwest pickup",
+  "open_question": "exact auction platform + registration (contractor-run vs Salesforce portal); pickup-only Columbus OH; buyer premium terms",
+  "status": "proposed"
  }
 ]
