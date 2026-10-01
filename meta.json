@@ -1,10 +1,10 @@
 {
- "scan_at": "2026-09-30T17:59:49+00:00",
- "lots": 58,
+ "scan_at": "2026-10-01T01:07:15+00:00",
+ "lots": 63,
  "verdicts": {
   "BUY": 38,
   "WATCH": 4,
-  "SKIP": 16
+  "SKIP": 21
  },
  "source": "finder-price-watch-morning"
 }
