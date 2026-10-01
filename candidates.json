@@ -202,5 +202,41 @@
   "why_promising": "Same state-surplus model that already scored BUY lots on IL iBid - the Ohio equivalent, verified recurring 10-60 unit laptop lots in 2026; Midwest pickup",
   "open_question": "exact auction platform + registration (contractor-run vs Salesforce portal); pickup-only Columbus OH; buyer premium terms",
   "status": "proposed"
+ },
+ {
+  "date_found": "2026-10-01",
+  "company": "Auctions International",
+  "url": "https://www.auctionsinternational.com",
+  "type": "auction house (government surplus)",
+  "location": "Dansville / East Aurora, NY, US",
+  "how_lots_sold": "public online timed auctions (free registration; buyer premium typically 10-14%)",
+  "bulk_evidence": "~1,000 sales in 2026 YTD (GoToAuction): Jun 2026 Mamaroneck UFSD single lot ~669 Chromebook laptops; Aug 2026 Minisink Valley CSD computer/Chromebook/laptop assortment; auction #37610 ~190 Chromebook laptops; Wayland Cohocton CSD 240x HP Chromebooks + 26x ProBooks; Ascension Parish SD lots of 116-345 Dell laptops + 345x Chromebook 2-in-1; background: since 1989 (37 yrs), BBB A+ accredited, 11167 Big Tree Rd East Aurora NY, 800-536-1401, no scam flags",
+  "why_promising": "37-year BBB A+ auctioneer with very active flow of 100-600+ unit school-district laptop/Chromebook lots - exactly the bulk cheap lots the model wants",
+  "open_question": "no published realized prices; no shipping offered (buyer-arranged freight from scattered school sites); winning bids need seller approval (soft reserve)",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-10-01",
+  "company": "Municibid",
+  "url": "https://municibid.com",
+  "type": "auction marketplace (government surplus)",
+  "location": "Pottstown, PA, US",
+  "how_lots_sold": "public online auctions (free registration, credit card on file; tiered buyer fee ~8%)",
+  "bulk_evidence": "Recurring NJ state-surplus (DSS series) multi-pallet computer lots: DSS2127 18 pallets incl. 52 laptops; DSS3645 incl. pallet of 145 Dell Latitude laptops; DSS2479 30 laptops; DSS2440 27 laptops; DSS2245 69 laptops; lots recur multiple times per year; background: founded 2006 (20 yrs), founder Greg Berry, 395 Circle of Progress Dr Pottstown PA, (800) 531-6074, claims 7,000+ agency clients / 1M+ bidders, no scam reports",
+  "why_promising": "Established 20-yr gov-surplus platform - a genuine peer channel to GovDeals/PublicSurplus with recurring multi-pallet computer lots and real laptop-yield lots",
+  "open_question": "closing prices not published on site; laptops are minority in most lots (desktops dominate 3-10x); pickup-only on big NJ lots (buyer freight)",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-10-01",
+  "company": "Equip-Bid",
+  "url": "https://www.equip-bid.com/",
+  "type": "auction marketplace (business liquidation)",
+  "location": "Lenexa, KS, US",
+  "how_lots_sold": "public online auctions (free registration, no-reserve $1 starts; 18% buyer premium)",
+  "bulk_evidence": "BULK EVIDENCE THIN: largest laptop lots found were 4-unit lots ('Lot of 4 Laptops (3) HP (1) Lenovo' closed Jun 18 2026 Grandview MO; 'Lot of 4 HP Laptops'; single HP ProBook 650 G2 Sep 2026 Kansas City KS); electronics are a side category via local affiliates; background: founded 2009, Equip-Bid.com Inc, 9660 Legler Road Lenexa KS 66219, 913-686-6345, 4.6 stars / 3,948 Birdeye reviews, no scam reports",
+  "why_promising": "Midwest platform (Kansas City) with thousands of no-reserve business-liquidation lots; credible watch point for occasional corporate laptop bundles - proposed on potential only",
+  "open_question": "no 10+ unit laptop lots found yet; shipping inconsistent across affiliates (several KC sellers pickup-only); whether any affiliate regularly runs 10+ unit office-laptop liquidations",
+  "status": "proposed"
  }
 ]
