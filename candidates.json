@@ -238,5 +238,29 @@
   "why_promising": "Midwest platform (Kansas City) with thousands of no-reserve business-liquidation lots; credible watch point for occasional corporate laptop bundles - proposed on potential only",
   "open_question": "no 10+ unit laptop lots found yet; shipping inconsistent across affiliates (several KC sellers pickup-only); whether any affiliate regularly runs 10+ unit office-laptop liquidations",
   "status": "proposed"
+ },
+ {
+  "date_found": "2026-10-02",
+  "company": "UW-Madison SWAP Online Auction (Surplus With A Purpose)",
+  "url": "https://veronaoperations.businessservices.wisc.edu/swap/public/",
+  "type": "university surplus",
+  "location": "Verona WI, US",
+  "how_lots_sold": "public online auction (own platform) + Public Surplus cross-listings",
+  "bulk_evidence": "Posts 25+ new auction listings every weekday incl. electronics/computers category; long-running UW surplus operation moving ~20 tons of material/week. background: real UW-Madison operation, physical warehouse 1061 Thousand Oaks Trail Verona WI, published phone (608) 497-4420, public terms & conditions",
+  "why_promising": "Big Ten university running its own daily online auction; steady ex-institutional device flow, ~3 hrs from the Twin Cities, distinct from Wisconsin Surplus Online Auction already watched",
+  "open_question": "whether laptop lots are offered in true bulk (10+ units) vs single items; buyer premium / fee schedule",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-10-02",
+  "company": "BidFTA",
+  "url": "https://www.bidfta.com/",
+  "type": "online auction marketplace",
+  "location": "Louisville KY (HQ), US; warehouses multi-state incl. Twin Cities (Jacob's Trading partnership)",
+  "how_lots_sold": "public online auction, daily-ending lots; local pickup at warehouse locations",
+  "bulk_evidence": "Laptop category shows ~435 live listings; auctions end daily across warehouse locations; Twin Cities expansion via Jacob's Trading partnership (PR coverage, ~May 2026). background: HQ 4325 Shepherdsville Rd Louisville KY; active press presence, multi-state warehouse footprint, pickup model with location filtering",
+  "why_promising": "High-volume daily auction model like a regional Liquidation.com; recent Twin Cities presence means local pickup possible; dedicated Electronics > Computers category with active laptop lots",
+  "open_question": "pickup-only vs freight shipping for bulk lots; buyer's premium rates; whether wholesale-size lots (10+ laptops) appear vs mostly single units",
+  "status": "proposed"
  }
 ]
