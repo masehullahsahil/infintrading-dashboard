@@ -262,5 +262,89 @@
   "why_promising": "High-volume daily auction model like a regional Liquidation.com; recent Twin Cities presence means local pickup possible; dedicated Electronics > Computers category with active laptop lots",
   "open_question": "pickup-only vs freight shipping for bulk lots; buyer's premium rates; whether wholesale-size lots (10+ laptops) appear vs mostly single units",
   "status": "proposed"
+ },
+ {
+  "date_found": "2026-10-03",
+  "company": "Innovative Auctions, Inc",
+  "url": "https://innovative-auctions.com",
+  "type": "auction house",
+  "location": "Dayton/Beavercreek, OH, US",
+  "how_lots_sold": "public online auctions via Proxibid + own-site catalog",
+  "bulk_evidence": "sales: Sep 2025 Lexis Nexis laptop auctions - bulk Dell Latitude E6420/E6320/E6410 lots + 'large group of shells' (pickup 822 Distribution Dr, Beavercreek); Jan-Feb 2025 Computers/Printers/Topaz Pads warehouse auction; 15% buyer premium; active auctions now. background: real full-service auction co serving SW Ohio; named auctioneers Mark Moore & Karen Huelsman (CAI); phone 937-847-8300; real warehouse 822 Distribution Dr, Beavercreek OH; no red flags",
+  "why_promising": "Recurring corporate/IT inventory (Lexis Nexis consigned bulk laptop auctions repeatedly in 2025) - exactly the ex-corporate lot flow, in the Midwest",
+  "open_question": "freight/shipping availability vs pickup-only (past terms: arrange own shipping)",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-10-03",
+  "company": "DirectBids (formerly Slapsale.com)",
+  "url": "https://www.slapsale.com",
+  "type": "online auction platform",
+  "location": "Houston/Sugar Land, TX, US",
+  "how_lots_sold": "public online auction",
+  "bulk_evidence": "sales: live 170-unit laptop lot at ~$2,000 (~$12/unit) closing ~2 days out; historical University Surplus Property online auctions (Shattuck LLC, GoToAuction). background: real operating auction platform but recently rebranded Slapsale->DirectBids; domain registration privacy-protected; currently medical-equipment-heavy; no third-party reviews found - background thin; proposed on potential",
+  "why_promising": "Active 170-unit laptop lot at ~$12/unit bid level right now - genuine bulk flow, publicly biddable",
+  "open_question": "how often IT lots appear (site mostly medical); shipping availability",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-10-03",
+  "company": "The Auction Mill",
+  "url": "https://www.theauctionmill.com",
+  "type": "auction house",
+  "location": "Omaha, NE, US",
+  "how_lots_sold": "public online auctions on own platform",
+  "bulk_evidence": "sales: recurring Omaha Public Schools surplus online auctions - one live closing Oct 11 2026 (preview at OPS warehouse 4224 N. 30th St, Omaha); Jun 2023 OPS auction incl. laptop carts; OPS RFP for up to 6 auctions/year - contractual ongoing channel. background: real firm at 1528 N Saddle Creek Rd, Omaha NE 68104; business liquidations in eastern NE / western IA; live business liquidations now; no red flags",
+  "why_promising": "Contractual recurring school-district surplus channel in the Midwest with laptop carts/computers appearing regularly; Midwest pickup",
+  "open_question": "actual laptop quantities per OPS sale; pickup-only or shippable",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-10-03",
+  "company": "DirectLiquidation",
+  "url": "https://www.directliquidation.com",
+  "type": "liquidation marketplace (B2B)",
+  "location": "Aventura, FL, US (ships from retailer FCs nationwide)",
+  "how_lots_sold": "timed auctions + make-an-offer + buy-now; freight/shipping offered",
+  "bulk_evidence": "sales: currently listing multiple laptop pallet lots - e.g. 10 pallets / 3,840 pcs laptops (Walmart returns, HP/Gateway/Lenovo/Asus) asking $133,100-$206,200 (~$35-54/unit); per-pallet price-history tool on platform. background: operated by Direction Liquidation LLP (21500 Biscayne Blvd Ste 900, Aventura FL 33108); parent ReturnPro (BusinessWire relaunch Jul 2025); domain since 2004 (~22 yrs); Scam Detector trust 80; support 1-800-679-9451; no red flags. Note: parent co overlaps a roster ITAD (The Recon Group/ReturnPro) but this is a distinct B2B pallet marketplace channel",
+  "why_promising": "Purpose-built wholesale liquidation marketplace with real recurring laptop-pallet flow from major retailers, visible pricing, no buyer-approval gate like B-Stock",
+  "open_question": "lots are salvage/untested - what share tests good; buyer premium/fees",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-10-03",
+  "company": "Discount Computer Depot",
+  "url": "https://discountcomputerdepot.com",
+  "type": "Microsoft Authorized Refurbisher / refurbisher-wholesaler",
+  "location": "Jacksonville, TX, US",
+  "how_lots_sold": "listed fixed prices on wholesale-lot pages; custom wholesale bundles by phone",
+  "bulk_evidence": "sales: dedicated Wholesale Laptops page w/ lots of 5/10/20/100+ units, custom bundles on request; current Lot of 50 HP EliteDesk 800 G4 Mini at $7,500-$9,750 (desktop proof of bulk flow); claims hundreds of thousands of devices in stock; triple-tested, 1-yr warranty. background: founded 2012; BBB Accredited A+; real address 1653 N Bolton St / 522 CR 1520, Jacksonville TX 75766; phones 1-844-466-9142; listed Microsoft Authorized Refurbisher; ~$14M revenue (RocketReach); no red flags; laptop lots currently custom-order only",
+  "why_promising": "MAR-credentialed refurbisher with explicit 100+ unit wholesale tier and tested business laptops (Dell/HP/Lenovo) w/ 1-yr warranty - credible steady wholesale source at fixed prices",
+  "open_question": "per-lot unit pricing on 100-unit laptop lots; freight shipping for exporter buyers",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-10-03",
+  "company": "Grafe Auction",
+  "url": "https://www.grafeauction.com",
+  "type": "auction house (bankruptcy/receivership, DC & warehouse liquidation)",
+  "location": "Stewartville, MN, US",
+  "how_lots_sold": "timed online auctions, ~290 events/yr nationwide",
+  "bulk_evidence": "sales thin on laptops specifically: DC liquidations carry 'Office, breakroom & IT' category; recent catalogs show corporate office equipment (Dell monitors/PCs out of St. Louis dealership auction closing Oct 8); bulk laptop lots appear incidentally, not recurring advertised flow - proposed on potential. background: BBB A+ rated; (800) 328-5920; Stewartville MN (PO Box 338, 55976); 25+ yr veteran auction team (CEO Judd Grafe); handles Ch.7/11 trustees and receivers; no red flags",
+  "why_promising": "Minnesota-based (local pickup) and bankruptcy/receivership work is exactly where corporate IT lots originate - worth catalog alerts for 10+ unit lots",
+  "open_question": "how often genuine bulk-laptop lots appear vs monitors/printers; catalog-alert setup",
+  "status": "proposed"
+ },
+ {
+  "date_found": "2026-10-03",
+  "company": "TechLots, LLC",
+  "url": "http://www.tech-lots.com",
+  "type": "IT asset remarketer / wholesale exporter",
+  "location": "Plano, TX, US",
+  "how_lots_sold": "quote-based wholesale, volume pricing, FOB Texas / door-to-door export shipping (air or sea)",
+  "bulk_evidence": "sales thin - no public lot archive; site claims completed orders 'from small volume to large quantities'. background: founded 2015; real Plano address 730 F Ave Ste 220, 75074; phone +1 (214) 299-4600; consistent ZoomInfo/Firmania/Selling.com profiles; no scam reports. Thin: 1-10 employees; proposed on potential",
+  "why_promising": "Site explicitly states export customers in the United Arab Emirates - an already-built used-laptop export-to-UAE channel matching the buyer's model; Dell/HP/Lenovo/Apple portfolio",
+  "open_question": "capacity to supply 50+ unit lots consistently at exportable prices",
+  "status": "proposed"
  }
 ]
